@@ -178,11 +178,11 @@ fun CreateTextField(
         },
         shape = RoundedCornerShape(30),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = androidx.compose.ui.graphics.Color.White,
+            textColor = androidx.compose.ui.graphics.Color.Black,
             focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
             focusedLabelColor = androidx.compose.ui.graphics.Color.Gray,
-            cursorColor = androidx.compose.ui.graphics.Color.White,
-            containerColor = androidx.compose.ui.graphics.Color.Transparent
+            cursorColor = androidx.compose.ui.graphics.Color.Black,
+            containerColor = androidx.compose.ui.graphics.Color.White
 
         )
     )
