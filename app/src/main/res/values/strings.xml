@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SportsUnity</string>
+    <string name="your_name">Enter Your Name</string>
+    <string name="your_university">Your University</string>
+    <string name="your_email">Your Email Address</string>
+    <string name="your_mobile">Your Mobile Number</string>
+    <string name="password_set">Set your password</string>
+</resources>
