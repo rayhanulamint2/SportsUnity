@@ -33,13 +33,11 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 @Preview(showBackground = true,
     showSystemUi = true)
 @Composable
 fun GreetingPreview() {
     SportsUnityTheme {
         Nav()
-
     }
 }
