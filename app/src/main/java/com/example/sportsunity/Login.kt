@@ -107,7 +107,7 @@ fun Login(navController: NavHostController,modifier: Modifier = Modifier) {
                         icon = Icons.Filled.Lock
                     )
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate("HOME") },
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .padding(10.dp)
