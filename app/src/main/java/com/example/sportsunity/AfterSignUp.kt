@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -82,15 +85,33 @@ fun myContentAfterSignUp(navController: NavController, innerpadding: PaddingValu
                     painter = painterResource(id = R.drawable.rectangle_13),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.width(380.dp),
+                    modifier = Modifier
+                        .width(380.dp),
                     alignment = Alignment.Center
                 )
-                Text(text = stringResource(id = R.string.congratulations_message),
+                Text(
+                    text = "Congratulations!\n" +
+                            "Your account has\n" +
+                            "been created.\n\n" +
+                            "Continue to Login?\n",
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
                     style = TextStyle(fontSize = 18.sp)
                 )
+                Button(
+                    onClick = { navController.navigate("LOGIN") },
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "LOGIN",
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
