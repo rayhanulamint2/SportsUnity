@@ -56,6 +56,7 @@ fun Home(navController: NavController,modifier: Modifier = Modifier) {
     )
 
 }
+
 @Composable
 fun TopBar(navController: NavController,modifier: Modifier = Modifier){
     Row(
@@ -143,7 +144,7 @@ fun myContent(navController: NavController,innerpadding: PaddingValues) {
             Button(onClick = { navController.navigate("CREATETOURNAMENT") }) {
                 Text(text = " CREATE NEW" + "\nTOURNAMENT",
                     textAlign = TextAlign.Center
-                    )
+                )
             }
         }
     }
