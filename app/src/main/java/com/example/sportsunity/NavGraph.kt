@@ -41,5 +41,10 @@ fun Nav(modifier:Modifier = Modifier){
             PersonalInfo(navController = navController,modifier)
         }
 
+        composable(route = "PARTICIPATIONS"){
+            Participations(navController = navController,modifier)
+        }
+
+
     }
 }

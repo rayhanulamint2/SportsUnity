@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -39,7 +38,7 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyProfile(navController:NavController, modifier: Modifier) {
+fun Participations(navController:NavController, modifier: Modifier) {
     Scaffold(
         topBar = { TopBarAfterSignUp(navController) },
         content = {innerpadding->
@@ -49,7 +48,7 @@ fun MyProfile(navController:NavController, modifier: Modifier) {
 }
 
 @Composable
-fun TopBarMyProfile(navController: NavController){
+fun TopBarParticipations(navController: NavController){
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -66,7 +65,7 @@ fun TopBarMyProfile(navController: NavController){
 }
 
 @Composable
-fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues){
+fun myContentParticipations(navController: NavController, innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -94,19 +93,6 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                         .clip(shape = RoundedCornerShape(16.dp)),
                     alignment = Alignment.Center
                 )
-
-                Image(
-                    painter = painterResource(id = R.drawable.profile_pic_null),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(bottom = 230.dp)
-                        .width(130.dp)
-                        .height(130.dp),
-//                        .clip(shape = RoundedCornerShape(16.dp)),
-                    alignment = Alignment.TopCenter
-                )
-
                 Text(
                     text = stringResource(R.string.profile_name),
                     color = Color.White,
@@ -116,32 +102,15 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                         .padding(24.dp),
                     style = TextStyle(fontSize = 20.sp)
                 )
-
                 Button(
-                    onClick = { navController.navigate("PERSONALINFO") },
+                    onClick = { navController.navigate("LOGIN") },
                     modifier = Modifier
-                        .size(width = 226.dp, height = 183.dp)
                         .align(Alignment.BottomCenter)
-                        .padding(bottom = 126.dp)
+                        .padding(16.dp)
                 ) {
                     Text(
-                        text = "Personal Information",
-                        textAlign = TextAlign.Center,
-                        fontSize = 16.sp
-                    )
-                }
-
-                Button(
-                    onClick = { navController.navigate("PARTICIPATIONS") },
-                    modifier = Modifier
-                        .size(width = 226.dp, height = 107.dp)
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 50.dp)
-                ) {
-                    Text(
-                        text = "Participations",
-                        textAlign = TextAlign.Center,
-                        fontSize = 17.sp
+                        text = "LOGIN",
+                        textAlign = TextAlign.Center
                     )
                 }
             }
