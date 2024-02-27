@@ -25,11 +25,20 @@ fun Nav(modifier:Modifier = Modifier){
         composable(route = "CREATETOURNAMENTCHESS"){
             CreateTournamentChess(navController,modifier)
         }
+
         composable(route = "AFTERSIGNUP"){
             AfterSignUp(navController = navController, modifier = modifier)
         }
         composable(route = "MYPROFILE"){
             MyProfile(navController = navController, modifier = modifier)
+        }
+
+
+        composable(route = "CONFIRMATION"){
+            Confirmation(navController = navController,modifier)
+        }
+        composable(route = "PERSONALINFO"){
+            PersonalInfo(navController = navController,modifier)
         }
 
     }
