@@ -84,6 +84,7 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                     .padding(start = 32.dp, bottom = 40.dp, end = 32.dp),
                 contentAlignment = Alignment.Center
             ) {
+
                 Image(
                     painter = painterResource(id = R.drawable.rectangle_13),
                     contentDescription = null,
@@ -96,7 +97,7 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                 )
 
                 Image(
-                    painter = painterResource(id = R.drawable.profile_pic_null),
+                    painter = painterResource(id = R.drawable.pro_pic_not_set),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
