@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -40,7 +41,7 @@ import androidx.navigation.NavController
 @Composable
 fun MyProfile(navController:NavController, modifier: Modifier) {
     Scaffold(
-        topBar = { TopBarAfterSignUp(navController) },
+        topBar = { TopBarMyProfile(navController) },
         content = {innerpadding->
             myContentMyProfile(navController,innerpadding)
         }
@@ -59,7 +60,7 @@ fun TopBarMyProfile(navController: NavController){
             text = stringResource(id = R.string.app_name),
             color = Color.White,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineMedium
         )
     }
 }
@@ -83,6 +84,7 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                     .padding(start = 32.dp, bottom = 40.dp, end = 32.dp),
                 contentAlignment = Alignment.Center
             ) {
+
                 Image(
                     painter = painterResource(id = R.drawable.rectangle_13),
                     contentDescription = null,
@@ -90,9 +92,22 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                     modifier = Modifier
                         .width(380.dp)
                         .height(480.dp)
-                        .clip(shape = RoundedCornerShape(20.dp)),
+                        .clip(shape = RoundedCornerShape(16.dp)),
                     alignment = Alignment.Center
                 )
+
+                Image(
+                    painter = painterResource(id = R.drawable.pro_pic_not_set),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(bottom = 230.dp)
+                        .width(130.dp)
+                        .height(130.dp),
+//                        .clip(shape = RoundedCornerShape(16.dp)),
+                    alignment = Alignment.TopCenter
+                )
+
                 Text(
                     text = stringResource(R.string.profile_name),
                     color = Color.White,
@@ -102,15 +117,32 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                         .padding(24.dp),
                     style = TextStyle(fontSize = 20.sp)
                 )
+
                 Button(
-                    onClick = { navController.navigate("LOGIN") },
+                    onClick = { navController.navigate("PERSONALINFO") },
                     modifier = Modifier
+                        .size(width = 226.dp, height = 183.dp)
                         .align(Alignment.BottomCenter)
-                        .padding(16.dp)
+                        .padding(bottom = 126.dp)
                 ) {
                     Text(
-                        text = "LOGIN",
-                        textAlign = TextAlign.Center
+                        text = "Personal Information",
+                        textAlign = TextAlign.Center,
+                        fontSize = 16.sp
+                    )
+                }
+
+                Button(
+                    onClick = { navController.navigate("PARTICIPATIONS") },
+                    modifier = Modifier
+                        .size(width = 226.dp, height = 107.dp)
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 50.dp)
+                ) {
+                    Text(
+                        text = "Participations",
+                        textAlign = TextAlign.Center,
+                        fontSize = 17.sp
                     )
                 }
             }

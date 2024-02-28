@@ -69,7 +69,7 @@ fun TopBar(navController: NavController,modifier: Modifier = Modifier){
             text = stringResource(id = R.string.app_name),
             color = Color.White,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
         )
     }
 }
