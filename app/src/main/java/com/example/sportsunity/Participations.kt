@@ -67,10 +67,7 @@ fun TopBarParticipations(navController: NavController){
             modifier = Modifier
                 .padding(top = 5.dp, bottom = 5.dp)
                 .absoluteOffset(x = (-15).dp, y = 1.dp)
-
         )
-
-
     }
 }
 
@@ -84,7 +81,7 @@ fun ImageButton(onClick: () -> Unit) {
         contentScale = ContentScale.Crop,
         modifier = Modifier
                     .size(40.dp)
-//                    .padding(top = 5.dp, bottom = 5.dp)
+                    .padding(top = 5.dp, bottom = 5.dp)
                     .absoluteOffset(x = (-85).dp, y = 4.dp)
 //                    .align(Alignment.Start)
             .clickable { onClick() }
