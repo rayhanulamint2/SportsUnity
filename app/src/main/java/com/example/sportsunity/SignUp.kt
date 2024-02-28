@@ -1,6 +1,7 @@
 package com.example.sportsunity
 
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -52,8 +53,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUp(navController: NavHostController, modifier: Modifier = Modifier) {
+fun SignUp(mainActivityCallback: MainActivityCallback,navController: NavHostController, modifier: Modifier = Modifier) {
     Box (modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -89,37 +91,59 @@ fun SignUp(navController: NavHostController, modifier: Modifier = Modifier) {
                 //                    .fillMaxSize()
                 //            )
                 Column(modifier = Modifier.padding(10.dp)) {
-                    CreateTextField(
+                    var name by rememberSaveable {
+                        mutableStateOf("")
+                    }
+                    var university by rememberSaveable {
+                        mutableStateOf("")
+                    }
+                    var email by rememberSaveable {
+                        mutableStateOf("")
+                    }
+                    var mobile by rememberSaveable {
+                        mutableStateOf("")
+                    }
+                    var password by rememberSaveable {
+                        mutableStateOf("")
+                    }
+                    name = CreateTextField(
                         stringResource(id = R.string.your_name), KeyboardType.Text, ImeAction.Next,
                         Icons.Filled.Person
                     )
-                    CreateTextField(
+                    university = CreateTextField(
                         stringResource(id = R.string.your_university),
                         KeyboardType.Text,
                         ImeAction.Next,
                         Icons.Filled.Home
                     )
-                    CreateTextField(
+                    email = CreateTextField(
                         stringResource(id = R.string.your_email),
                         KeyboardType.Email,
                         ImeAction.Next,
                         icon = Icons.Filled.Email
                     )
-                    CreateTextField(
+
+                    mobile = CreateTextField(
                         stringResource(id = R.string.your_mobile),
                         KeyboardType.Number,
                         ImeAction.Next,
                         Icons.Filled.Phone
                     )
-                    CreateTextField(
+                    password = CreateTextField(
                         stringResource(id = R.string.password_set),
                         KeyboardType.Password,
                         ImeAction.Go,
                         Icons.Filled.Lock
                     )
+                    Log.d("my name ",name)
+                    Log.d("my university ",university)
+                    Log.d("my number ",mobile)
 
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            mainActivityCallback.createAccount(email = email,password = password)
+                            navController.navigate("LOGIN")
+                                  },
                         modifier = Modifier
                             .padding(10.dp)
                             .align(Alignment.CenterHorizontally) // Center the button horizontally
@@ -155,7 +179,7 @@ fun CreateTextField(
     imeaction:ImeAction,
     icon:ImageVector,
     modifier: Modifier = Modifier
-) {
+): String {
     var text by rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
         modifier = Modifier// Add border to TextField
@@ -186,6 +210,7 @@ fun CreateTextField(
 
         )
     )
+    return text
 }
 
 @Preview(showSystemUi = true)
