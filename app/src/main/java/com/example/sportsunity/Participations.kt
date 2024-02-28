@@ -2,6 +2,7 @@ package com.example.sportsunity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,6 +64,20 @@ fun TopBarParticipations(navController: NavController){
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineMedium
         )
+        @Composable
+        fun ImageButton(onClick: () -> Unit) {
+            val image: Painter = painterResource(id = R.drawable.back_button)
+            Image(
+                painter = image,
+                contentDescription = "Back Button",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+//                    .size(100.dp)
+                    .padding(16.dp)
+//                    .align(Alignment.TopStart)
+                    .clickable { onClick() } // Add onClick lambda to make it clickable
+            )
+        }
     }
 }
 
@@ -74,45 +91,64 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
             modifier = Modifier.fillMaxSize(),
         )
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 32.dp, bottom = 40.dp, end = 32.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.TopCenter
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.rectangle_13),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
+                        .padding(top = 12.dp)
                         .width(380.dp)
-                        .height(480.dp)
+                        .height(180.dp)
                         .clip(shape = RoundedCornerShape(16.dp)),
-                    alignment = Alignment.Center
+                    alignment = Alignment.TopCenter
                 )
                 Text(
-                    text = stringResource(R.string.profile_name),
+                    text = "As Organizer",
                     color = Color.White,
+                    fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(24.dp),
                     style = TextStyle(fontSize = 20.sp)
                 )
-                Button(
-                    onClick = { navController.navigate("LOGIN") },
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, bottom = 40.dp, end = 32.dp),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.rectangle_13),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = "LOGIN",
-                        textAlign = TextAlign.Center
-                    )
-                }
+                        .padding(top = 12.dp)
+                        .width(380.dp)
+                        .height(180.dp)
+                        .clip(shape = RoundedCornerShape(16.dp)),
+                    alignment = Alignment.TopCenter
+                )
+                Text(
+                    text = "As Participant",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    style = TextStyle(fontSize = 20.sp)
+                )
             }
         }
     }
