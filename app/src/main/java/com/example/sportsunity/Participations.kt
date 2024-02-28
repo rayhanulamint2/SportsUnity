@@ -6,26 +6,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-//import androidx.compose.foundation.layout.BoxScopeInstance.align
 import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.ColumnScopeInstance.align
-//import androidx.compose.foundation.layout.FlowColumnScopeInstance.align
-//import androidx.compose.foundation.layout.FlowRowScopeInstance.align
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-//import androidx.compose.foundation.layout.RowScopeInstance.align
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
-import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -140,6 +131,16 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
                         .padding(24.dp),
                     style = TextStyle(fontSize = 20.sp)
                 )
+                Text (
+                    text = "Empty",
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(fontSize = 15.sp),
+                    modifier = Modifier
+//                        .absoluteOffset(x = 80.dp, y = 80.dp)
+                        .padding(110.dp)
+
+                )
             }
             Box(
                 modifier = Modifier
@@ -167,6 +168,16 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
                         .fillMaxWidth()
                         .padding(24.dp),
                     style = TextStyle(fontSize = 20.sp)
+                )
+                Text (
+                    text = "Empty",
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(fontSize = 15.sp),
+                    modifier = Modifier
+//                        .absoluteOffset(x = 80.dp, y = 80.dp)
+                        .padding(110.dp)
+
                 )
             }
         }
