@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun Nav(modifier:Modifier = Modifier){
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "MYPROFILE"){
+    NavHost(navController = navController, startDestination = "PARTICIPATIONS"){
         composable(route = "LOGIN"){
             Login(navController,modifier)
         }
