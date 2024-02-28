@@ -40,9 +40,9 @@ import androidx.navigation.NavController
 @Composable
 fun Participations(navController:NavController, modifier: Modifier) {
     Scaffold(
-        topBar = { TopBarAfterSignUp(navController) },
+        topBar = { TopBarParticipations(navController) },
         content = {innerpadding->
-            myContentMyProfile(navController,innerpadding)
+            myContentParticipations(navController,innerpadding)
         }
     )
 }
@@ -56,10 +56,10 @@ fun TopBarParticipations(navController: NavController){
             .fillMaxWidth()
     ){
         Text(
-            text = stringResource(id = R.string.app_name),
+            text = stringResource(R.string.participations_title),
             color = Color.White,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineMedium
         )
     }
 }

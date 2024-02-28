@@ -41,7 +41,7 @@ import androidx.navigation.NavController
 @Composable
 fun MyProfile(navController:NavController, modifier: Modifier) {
     Scaffold(
-        topBar = { TopBarAfterSignUp(navController) },
+        topBar = { TopBarMyProfile(navController) },
         content = {innerpadding->
             myContentMyProfile(navController,innerpadding)
         }
@@ -60,7 +60,7 @@ fun TopBarMyProfile(navController: NavController){
             text = stringResource(id = R.string.app_name),
             color = Color.White,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineMedium
         )
     }
 }
