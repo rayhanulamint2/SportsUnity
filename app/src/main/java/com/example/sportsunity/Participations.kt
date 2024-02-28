@@ -65,7 +65,7 @@ fun TopBarParticipations(navController: NavController){
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
-                .padding(top = 5.dp, bottom = 5.dp)
+                .padding(top = 4.dp, bottom = 5.dp)
                 .absoluteOffset(x = (-15).dp, y = 1.dp)
         )
     }
