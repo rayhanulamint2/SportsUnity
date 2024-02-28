@@ -50,23 +50,33 @@ fun Participations(navController:NavController, modifier: Modifier) {
 
 @Composable
 fun TopBarParticipations(navController: NavController){
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .background(Color.Black)
-            .fillMaxWidth()
-    ){
-        ImageButton {
-            navController.navigate("MYPROFILE")
-        }
-        Text(
-            text = stringResource(R.string.participations_title),
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium,
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .padding(top = 4.dp, bottom = 5.dp)
-                .absoluteOffset(x = (-15).dp, y = 1.dp)
+                .background(Color.Black)
+                .fillMaxWidth()
+        ){
+            ImageButton {
+                navController.navigate("MYPROFILE")
+            }
+            Text(
+                text = stringResource(R.string.participations_title),
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .padding(top = 4.dp, bottom = 5.dp)
+                    .absoluteOffset(x = (-15).dp, y = 1.dp)
+            )
+        }
+        Image(
+            painter = painterResource(id = R.drawable.blue_line),
+            contentDescription = "Blue Line",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(2.dp)
+                .fillMaxWidth()
         )
     }
 }
@@ -80,9 +90,9 @@ fun ImageButton(onClick: () -> Unit) {
         contentDescription = "Back Button",
         contentScale = ContentScale.Crop,
         modifier = Modifier
-                    .size(40.dp)
-                    .padding(top = 5.dp, bottom = 5.dp)
-                    .absoluteOffset(x = (-85).dp, y = 4.dp)
+            .size(40.dp)
+            .padding(top = 5.dp, bottom = 5.dp)
+            .absoluteOffset(x = (-85).dp, y = 4.dp)
 //                    .align(Alignment.Start)
             .clickable { onClick() }
     )
@@ -95,7 +105,7 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
             painter = painterResource(id = R.drawable.image_1),
             contentDescription = "Background",
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
         )
         Column(
             verticalArrangement = Arrangement.Top,
@@ -134,7 +144,6 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
                     textAlign = TextAlign.Center,
                     style = TextStyle(fontSize = 15.sp),
                     modifier = Modifier
-//                        .absoluteOffset(x = 80.dp, y = 80.dp)
                         .padding(110.dp)
 
                 )
@@ -172,11 +181,11 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
                     textAlign = TextAlign.Center,
                     style = TextStyle(fontSize = 15.sp),
                     modifier = Modifier
-//                        .absoluteOffset(x = 80.dp, y = 80.dp)
                         .padding(110.dp)
 
                 )
             }
         }
     }
+
 }
