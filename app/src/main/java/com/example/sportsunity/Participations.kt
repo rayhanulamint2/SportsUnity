@@ -1,14 +1,21 @@
 package com.example.sportsunity
 
+import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+//import androidx.compose.foundation.layout.BoxScopeInstance.align
 import androidx.compose.foundation.layout.Column
+//import androidx.compose.foundation.layout.ColumnScopeInstance.align
+//import androidx.compose.foundation.layout.FlowColumnScopeInstance.align
+//import androidx.compose.foundation.layout.FlowRowScopeInstance.align
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+//import androidx.compose.foundation.layout.RowScopeInstance.align
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -58,27 +65,39 @@ fun TopBarParticipations(navController: NavController){
             .background(Color.Black)
             .fillMaxWidth()
     ){
+        ImageButton {
+            navController.navigate("MYPROFILE")
+        }
         Text(
             text = stringResource(R.string.participations_title),
             color = Color.White,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier
+                .padding(top = 5.dp, bottom = 5.dp)
+                .absoluteOffset(x = (-15).dp, y = 1.dp)
+
         )
-        @Composable
-        fun ImageButton(onClick: () -> Unit) {
-            val image: Painter = painterResource(id = R.drawable.back_button)
-            Image(
-                painter = image,
-                contentDescription = "Back Button",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-//                    .size(100.dp)
-                    .padding(16.dp)
-//                    .align(Alignment.TopStart)
-                    .clickable { onClick() } // Add onClick lambda to make it clickable
-            )
-        }
+
+
     }
+}
+
+
+@Composable
+fun ImageButton(onClick: () -> Unit) {
+    val image: Painter = painterResource(id = R.drawable.back_button)
+    Image(
+        painter = image,
+        contentDescription = "Back Button",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+                    .size(40.dp)
+//                    .padding(top = 5.dp, bottom = 5.dp)
+                    .absoluteOffset(x = (-85).dp, y = 4.dp)
+//                    .align(Alignment.Start)
+            .clickable { onClick() }
+    )
 }
 
 @Composable
