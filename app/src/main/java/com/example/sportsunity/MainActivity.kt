@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.example.sportsunity.ui.theme.SportsUnityTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -41,6 +42,29 @@ class MainActivity : ComponentActivity(),MainActivityCallback {
                 }
         }
     }
+    override fun login(email: String, password: String,navController: NavController) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Login successful
+                    val user = auth.currentUser
+                    Toast.makeText(
+                        baseContext,
+                        "Log In Successful.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    navController.navigate("HOME")
+                } else {
+                    // Login failed
+                    Log.w("Login", "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Your Email or Password is incorrect.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +78,7 @@ class MainActivity : ComponentActivity(),MainActivityCallback {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    Nav(mainActivityCallBack)
+                    Firebase.auth.currentUser?.let { Nav(mainActivityCallback = mainActivityCallBack,user = it) }
                 }
             }
         }
