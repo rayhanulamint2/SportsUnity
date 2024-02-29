@@ -5,13 +5,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sportsunity.ui.theme.NewMatchCreation
 import com.google.firebase.auth.FirebaseUser
 
 @Composable
 fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:Modifier = Modifier){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "LOGIN"){
+    NavHost(navController = navController, startDestination = "WINNERLIST"){
 
         composable(route = "LOGIN"){
             Login(mainActivityCallback = mainActivityCallback,navController,modifier)
@@ -53,6 +54,12 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
         }
         composable(route = "SPORTSLISTFORORGANAIZER"){
             SportsListForOrganaizer(navController = navController,modifier = modifier)
+        }
+        composable(route = "NEWMATCHCREATION"){
+            NewMatchCreation(navController = navController,modifier = modifier)
+        }
+        composable(route = "WINNERLIST"){
+            WinnerList(navController = navController,modifier = modifier)
         }
 
 

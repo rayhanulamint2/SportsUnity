@@ -26,5 +26,14 @@
     <string name="chess">CHESS</string>
     <string name="ludo">LUDO</string>
     <string name="carrom">CARROM</string>
+    <string name="create_match">Create a New Match</string>
+    <string name="winner1">Khalid Bin Selim</string>
+    <string name="winner2">Rayhanul Amin Tanvir</string>
+    <string name="winner3">Abhishek Das</string>
+    <string name="winner4">Gazi Muztaba Rafid </string>
+    <string name="round1">1</string>
+    <string name="round2">2</string>
+    <string name="name">Name</string>
+    <string name="round">Round</string>
 
 </resources>

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -141,8 +143,9 @@ fun SportListCard(navController: NavController, sportlist: SportsList, modifier:
         modifier = modifier
             .fillMaxWidth(.8f)
             .clickable {
-                navController.navigate("CREATETOURNAMENTCHESS")
-            }
+                navController.navigate("NEWMATCHCREATION")
+            },
+        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.maastricht_Blue))
 
     ){
 

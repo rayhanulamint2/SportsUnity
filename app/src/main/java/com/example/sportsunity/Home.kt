@@ -24,6 +24,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -204,7 +205,8 @@ fun RunningTournamentCard(navController: NavController,runningtournament: Runnin
     Card(
         modifier = modifier.clickable {
             navController.navigate("CREATETOURNAMENT")
-        }
+        },
+        colors = CardDefaults.cardColors(containerColor = Color.Black)
 
         ){
 
@@ -220,7 +222,7 @@ fun RunningTournamentCard(navController: NavController,runningtournament: Runnin
             )
             Text(
                 text = LocalContext.current.getString(runningtournament.stringResourceId),
-                color = Color.Black,
+                color = Color.White,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(top = 10.dp, start = 16.dp),
                 //                style = MaterialTheme.typography.headlineSmall
@@ -230,7 +232,7 @@ fun RunningTournamentCard(navController: NavController,runningtournament: Runnin
             Spacer(modifier = Modifier.height(15.dp))
             Text(
                 text = LocalContext.current.getString(runningtournament.stringResourceId2),
-                color = Color.Black,
+                color = Color.White,
                 fontSize = 10.sp,
                 modifier = Modifier.padding(start = 16.dp)
             )

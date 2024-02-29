@@ -13,3 +13,8 @@ data class SportsList(
     @StringRes val stringResourceId1: Int,
 )
 
+data class WinnerList(
+    @StringRes val stringResourceId1: Int,
+    @StringRes val stringResourceId2: Int,
+)
+

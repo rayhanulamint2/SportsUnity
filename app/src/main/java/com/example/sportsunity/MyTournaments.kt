@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -102,7 +103,7 @@ fun BackButtonFromMyTournaments(onClick: () -> Unit) {
         modifier = Modifier
             .size(40.dp)
             .padding(top = 5.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-40).dp, y = 4.dp)
+            .absoluteOffset(x = (-50).dp, y = 4.dp)
 //                    .align(Alignment.Start)
             .clickable { onClick() }
     )
@@ -139,7 +140,8 @@ fun MyTournamentCard(navController: NavController, mytournament: RunningTourname
     Card(
         modifier = modifier.clickable {
             navController.navigate("SPORTSLISTFORORGANAIZER")
-        }
+        },
+        colors = CardDefaults.cardColors(containerColor = Color.Black)
 
     ){
 
@@ -155,7 +157,7 @@ fun MyTournamentCard(navController: NavController, mytournament: RunningTourname
         )
         Text(
             text = LocalContext.current.getString(mytournament.stringResourceId),
-            color = Color.Black,
+            color = Color.White,
             fontSize = 20.sp,
             modifier = Modifier.padding(top = 10.dp, start = 16.dp),
             //                style = MaterialTheme.typography.headlineSmall
@@ -165,7 +167,7 @@ fun MyTournamentCard(navController: NavController, mytournament: RunningTourname
         Spacer(modifier = Modifier.height(15.dp))
         Text(
             text = LocalContext.current.getString(mytournament.stringResourceId2),
-            color = Color.Black,
+            color = Color.White,
             fontSize = 10.sp,
             modifier = Modifier.padding(start = 16.dp)
         )
