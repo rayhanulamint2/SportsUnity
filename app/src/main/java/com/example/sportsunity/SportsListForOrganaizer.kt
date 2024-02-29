@@ -1,6 +1,5 @@
 package com.example.sportsunity
 
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,57 +8,49 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.sportsunity.data.DataSource
-import com.example.sportsunity.data.DataSourceForMyTournament
-import com.example.sportsunity.model.RunningTournament
+import com.example.sportsunity.data.DataSourceForSportList
+import com.example.sportsunity.model.SportsList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTournaments(navController:NavController, modifier: Modifier) {
+fun SportsListForOrganaizer(navController: NavController,tournamentName: String = "CSE Indoor Tournament",modifier: Modifier = Modifier){
+    val paddingValues = 10.dp
     Scaffold(
-        topBar = { TopBarMyTournaments(navController) },
+        topBar = { TopBarSportsList(navController = navController,tournamentName = tournamentName) },
         content = {innerpadding->
-            myContentMyTournaments(navController,innerpadding)
+//            myContent(navController,innerpadding)
+            myContentSportsListForOrganaizer(navController = navController, innerpadding = innerpadding )
         }
     )
-}
 
+}
 @Composable
-fun TopBarMyTournaments(navController: NavController){
+fun TopBarSportsList(navController: NavController,tournamentName: String){
     Column {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -67,11 +58,11 @@ fun TopBarMyTournaments(navController: NavController){
                 .background(Color.Black)
                 .fillMaxWidth()
         ){
-            BackButtonFromMyTournaments {
+            BackButtonFromSportsListForOrganaizer {
                 navController.navigate("HOME")
             }
             Text(
-                text = stringResource(R.string.mytournaments_title),
+                text = tournamentName,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineSmall,
@@ -93,7 +84,7 @@ fun TopBarMyTournaments(navController: NavController){
 
 
 @Composable
-fun BackButtonFromMyTournaments(onClick: () -> Unit) {
+fun BackButtonFromSportsListForOrganaizer(onClick: () -> Unit) {
     val image: Painter = painterResource(id = R.drawable.back_button)
     Image(
         painter = image,
@@ -102,14 +93,14 @@ fun BackButtonFromMyTournaments(onClick: () -> Unit) {
         modifier = Modifier
             .size(40.dp)
             .padding(top = 5.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-85).dp, y = 4.dp)
+            .absoluteOffset(x = (-40).dp, y = 4.dp)
 //                    .align(Alignment.Start)
             .clickable { onClick() }
     )
 }
 
 @Composable
-fun myContentMyTournaments(navController: NavController, innerpadding: PaddingValues){
+fun myContentSportsListForOrganaizer(navController: NavController,innerpadding:PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -117,60 +108,56 @@ fun myContentMyTournaments(navController: NavController, innerpadding: PaddingVa
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-        MyTournamentList(navController = navController, mytournamentList = DataSourceForMyTournament().loadMyTournament())
+        SportsList(navController = navController, sportlist = DataSourceForSportList().loadSportList())
     }
 }
-@Composable
-fun MyTournamentList(navController: NavController,mytournamentList: List<RunningTournament>,modifier: Modifier = Modifier){
 
-    LazyColumn(modifier = modifier.padding(top = 50.dp)){
-        items(mytournamentList){ mytournament ->
-            MyTournamentCard(
-                navController = navController,
-                mytournament = mytournament,
-                modifier = Modifier.padding(8.dp)
+@Composable
+fun SportsList(navController: NavController, sportlist: List<SportsList>, modifier: Modifier = Modifier){
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "SPORTS LIST",
+            color = Color.White,
+            fontSize = 36.sp,
+
             )
+        LazyColumn(modifier = modifier.padding(top = 50.dp)) {
+            items(sportlist) { mysport ->
+                SportListCard(
+                    navController = navController,
+                    sportlist = mysport,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
         }
     }
 }
-
 @Composable
-fun MyTournamentCard(navController: NavController, mytournament: RunningTournament, modifier:Modifier = Modifier){
+fun SportListCard(navController: NavController, sportlist: SportsList, modifier:Modifier = Modifier){
     Card(
-        modifier = modifier.clickable {
-            navController.navigate("AFTERSIGNUP")
-        }
+        modifier = modifier
+            .fillMaxWidth(.8f)
+            .clickable {
+                navController.navigate("AFTERSIGNUP")
+            }
 
     ){
 
 
-//        Box(modifier = modifier.fillMaxSize()){
-        Image(
-            painter = painterResource(id = mytournament.imageResourceId),
-            contentDescription = stringResource(id = mytournament.stringResourceId),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(194.dp),
-            contentScale = ContentScale.Crop
-        )
         Text(
-            text = LocalContext.current.getString(mytournament.stringResourceId),
+            text = LocalContext.current.getString(sportlist.stringResourceId1),
             color = Color.Black,
             fontSize = 20.sp,
-            modifier = Modifier.padding(top = 10.dp, start = 16.dp),
-            //                style = MaterialTheme.typography.headlineSmall
+            modifier = Modifier
+                .fillMaxWidth()
+//                .align(Alignment.Center)
+                .padding(top = 10.dp,end = 10.dp,)
+//                            style = MaterialTheme.typography.headlineSmall
         )
 
-//        }
-        Spacer(modifier = Modifier.height(15.dp))
-        Text(
-            text = LocalContext.current.getString(mytournament.stringResourceId2),
-            color = Color.Black,
-            fontSize = 10.sp,
-            modifier = Modifier.padding(start = 16.dp)
-        )
     }
 
 }
-
-

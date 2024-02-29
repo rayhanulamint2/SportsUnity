@@ -142,7 +142,7 @@ fun SignUp(mainActivityCallback: MainActivityCallback,navController: NavHostCont
                     Button(
                         onClick = {
                             mainActivityCallback.createAccount(email = email,password = password)
-                            navController.navigate("LOGIN")
+                            navController.navigate("AFTERSIGNUP")
                                   },
                         modifier = Modifier
                             .padding(10.dp)

@@ -17,5 +17,14 @@
     <string name="mytournaments_title"> My Tournaments </string>
 
     <string name="confirm">Confirmation</string>
+    <string name="eee_indoor">EEE indoor tournament</string>
+    <string name="eee_des">Welcome to EEE indoor tournament which includes games like chess, carrom etc</string>
+    <string name="ipe_indoor">IPE indoor tournament</string>
+    <string name="ipe_des">Welcome to IPE indoor tournament which includes games like chess, carrom etc</string>
+    <string name="indoor">CSE indoor tournament</string>
+    <string name="cse_des">Welcome to CSE indoor tournament which includes games like chess, carrom etc</string>
+    <string name="chess">CHESS</string>
+    <string name="ludo">LUDO</string>
+    <string name="carrom">CARROM</string>
 
 </resources>

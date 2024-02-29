@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:Modifier = Modifier){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "MYTOURNAMENTS"){
+    NavHost(navController = navController, startDestination = "HOME"){
 
         composable(route = "LOGIN"){
             Login(mainActivityCallback = mainActivityCallback,navController,modifier)
@@ -50,6 +50,9 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
 
         composable(route = "MYTOURNAMENTS"){
             MyTournaments(navController = navController,modifier)
+        }
+        composable(route = "SPORTSLISTFORORGANAIZER"){
+            SportsListForOrganaizer(navController = navController,modifier = modifier)
         }
 
 
