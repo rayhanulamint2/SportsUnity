@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,17 +41,17 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Participations(navController:NavController, modifier: Modifier) {
+fun MyTournaments(navController:NavController, modifier: Modifier) {
     Scaffold(
-        topBar = { TopBarParticipations(navController) },
+        topBar = { TopBarMyTournaments(navController) },
         content = {innerpadding->
-            myContentParticipations(navController,innerpadding)
+            myContentMyTournaments(navController,innerpadding)
         }
     )
 }
 
 @Composable
-fun TopBarParticipations(navController: NavController){
+fun TopBarMyTournaments(navController: NavController){
     Column {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -57,14 +59,14 @@ fun TopBarParticipations(navController: NavController){
                 .background(Color.Black)
                 .fillMaxWidth()
         ){
-            BackButtonFromParticipations {
-                navController.navigate("MYPROFILE")
+            BackButtonFromMyTournaments {
+                navController.navigate("HOME")
             }
             Text(
-                text = stringResource(R.string.participations_title),
+                text = stringResource(R.string.mytournaments_title),
                 color = Color.White,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 5.dp)
                     .absoluteOffset(x = (-15).dp, y = 1.dp)
@@ -83,7 +85,7 @@ fun TopBarParticipations(navController: NavController){
 
 
 @Composable
-fun BackButtonFromParticipations(onClick: () -> Unit) {
+fun BackButtonFromMyTournaments(onClick: () -> Unit) {
     val image: Painter = painterResource(id = R.drawable.back_button)
     Image(
         painter = image,
@@ -99,7 +101,7 @@ fun BackButtonFromParticipations(onClick: () -> Unit) {
 }
 
 @Composable
-fun myContentParticipations(navController: NavController, innerpadding: PaddingValues){
+fun myContentMyTournaments(navController: NavController, innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -124,68 +126,22 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
                     modifier = Modifier
                         .padding(top = 12.dp)
                         .width(380.dp)
-                        .height(180.dp)
+                        .height(380.dp)
                         .clip(shape = RoundedCornerShape(16.dp)),
                     alignment = Alignment.TopCenter
                 )
-                Text(
-                    text = "As Organizer",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    style = TextStyle(fontSize = 20.sp)
-                )
-                Text (
-                    text = "Empty",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(fontSize = 15.sp),
-                    modifier = Modifier
-                        .padding(110.dp)
+                FilledTonalButtonExample {
+//                    navController.navigate("SportsTypePage")
 
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 32.dp, bottom = 40.dp, end = 32.dp),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.rectangle_13),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .width(380.dp)
-                        .height(180.dp)
-                        .clip(shape = RoundedCornerShape(16.dp)),
-                    alignment = Alignment.TopCenter
-                )
-                Text(
-                    text = "As Participant",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    style = TextStyle(fontSize = 20.sp)
-                )
-                Text (
-                    text = "Empty",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(fontSize = 15.sp),
-                    modifier = Modifier
-                        .padding(110.dp)
-
-                )
+                }
             }
         }
     }
+}
 
+@Composable
+fun FilledTonalButtonExample(onClick: () -> Unit) {
+    FilledTonalButton(onClick = { onClick() }) {
+        Text("Indoor 2024(organized by CSE Society,SUST)")
+    }
 }

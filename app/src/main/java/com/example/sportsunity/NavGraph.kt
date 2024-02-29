@@ -5,15 +5,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 @Composable
-fun Nav(mainActivityCallback: MainActivityCallback,user:FirebaseUser, modifier:Modifier = Modifier){
+fun Nav(mainActivityCallback: MainActivityCallback,modifier:Modifier = Modifier){
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "LOGIN"){
+    NavHost(navController = navController, startDestination = "MYTOURNAMENTS"){
         composable(route = "LOGIN"){
-            Login(mainActivityCallback = mainActivityCallback,navController,modifier)
+            Login(navController,modifier)
         }
         composable(route = "SIGNUP"){
             SignUp(mainActivityCallback = mainActivityCallback,navController,modifier)
@@ -45,6 +43,10 @@ fun Nav(mainActivityCallback: MainActivityCallback,user:FirebaseUser, modifier:M
 
         composable(route = "PARTICIPATIONS"){
             Participations(navController = navController,modifier)
+        }
+
+        composable(route = "MYTOURNAMENTS"){
+            MyTournaments(navController = navController,modifier)
         }
 
 
