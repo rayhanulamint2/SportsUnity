@@ -1,7 +1,9 @@
 package com.example.sportsunity
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -120,11 +122,14 @@ fun myContentWinnerList(navController: NavController,innerpadding:PaddingValues)
 @Composable
 fun ListForWinnerList(navController: NavController, winnerlist: List<WinnerList>, modifier: Modifier = Modifier){
     Column(
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+//        modifier = Modifier.fillMaxSize().border(border = BorderStroke(2.dp, color = Color.White), // Set border stroke to 2dp with Black color
+//            shape = MaterialTheme.shapes.medium)
     ) {
         val win = WinnerList(R.string.name, R.string.round)
         WinnerListCard(navController = navController, winnerlist = win)
-        LazyColumn(modifier = modifier.padding(top = 50.dp)) {
+        LazyColumn(modifier = modifier.padding(top = 20.dp)) {
             items(winnerlist) { winnerlist ->
                 WinnerListCard(
                     navController = navController,
@@ -156,34 +161,48 @@ fun WinnerListCard(navController: NavController, winnerlist: WinnerList, modifie
         var round by rememberSaveable {
             mutableStateOf("")
         }
-        OutlinedTextField(
-            value = LocalContext.current.getString(winnerlist.stringResourceId1),
-            onValueChange = {text = it},
-            enabled = true,
-            shape = RoundedCornerShape(30),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = androidx.compose.ui.graphics.Color.White,
-                focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
-                cursorColor = androidx.compose.ui.graphics.Color.Black,
-                containerColor = colorResource(id = R.color.maastricht_Blue)
-
-            ),
-            modifier = Modifier.padding(10.dp).weight(.7f)
+        Text(
+            text = LocalContext.current.getString(winnerlist.stringResourceId1),
+            color = Color.White,
+            modifier = Modifier
+                .padding(10.dp)
+                .weight(.7f),
         )
-        OutlinedTextField(
-            value = LocalContext.current.getString(winnerlist.stringResourceId2),
-            onValueChange = {text = it},
-            enabled = true,
-            shape = RoundedCornerShape(30),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = androidx.compose.ui.graphics.Color.White,
-                focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
-                cursorColor = androidx.compose.ui.graphics.Color.Black,
-                containerColor = colorResource(id = R.color.maastricht_Blue)
-
-            ),
-            modifier = Modifier.padding(10.dp).weight(.3f)
+        Text(
+            text = LocalContext.current.getString(winnerlist.stringResourceId2),
+            color = Color.White,
+            modifier = Modifier
+                .padding(10.dp)
+                .weight(.7f)
         )
+//        OutlinedTextField(
+//            value = LocalContext.current.getString(winnerlist.stringResourceId1),
+//            onValueChange = {text = it},
+//            enabled = true,
+//            shape = RoundedCornerShape(30),
+//            colors = TextFieldDefaults.outlinedTextFieldColors(
+//                textColor = androidx.compose.ui.graphics.Color.White,
+//                focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
+//                cursorColor = androidx.compose.ui.graphics.Color.Black,
+//                containerColor = colorResource(id = R.color.maastricht_Blue)
+//
+//            ),
+//            modifier = Modifier.padding(10.dp).weight(.7f)
+//        )
+//        OutlinedTextField(
+//            value = LocalContext.current.getString(winnerlist.stringResourceId2),
+//            onValueChange = {text = it},
+//            enabled = true,
+//            shape = RoundedCornerShape(30),
+//            colors = TextFieldDefaults.outlinedTextFieldColors(
+//                textColor = androidx.compose.ui.graphics.Color.White,
+//                focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
+//                cursorColor = androidx.compose.ui.graphics.Color.Black,
+//                containerColor = colorResource(id = R.color.maastricht_Blue)
+//
+//            ),
+//            modifier = Modifier.padding(10.dp).weight(.3f)
+//        )
     }
 
 
