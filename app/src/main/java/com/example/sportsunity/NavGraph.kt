@@ -9,9 +9,11 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun Nav(mainActivityCallback: MainActivityCallback,modifier:Modifier = Modifier){
     val navController = rememberNavController()
+
     NavHost(navController = navController, startDestination = "MYTOURNAMENTS"){
+
         composable(route = "LOGIN"){
-            Login(navController,modifier)
+            Login(mainActivityCallback = mainActivityCallback,navController,modifier)
         }
         composable(route = "SIGNUP"){
             SignUp(mainActivityCallback = mainActivityCallback,navController,modifier)
