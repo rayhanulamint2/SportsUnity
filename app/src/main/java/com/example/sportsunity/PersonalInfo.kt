@@ -117,7 +117,7 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
                 ){
                     Image(
                         painter = painterResource(id = R.drawable.ellipse_1),
-                        contentDescription = "user photo",
+                        contentDescription = "user's photo",
                         modifier = Modifier.fillMaxWidth()
                     )
                     Text(

@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:Modifier = Modifier){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "HOME"){
+    NavHost(navController = navController, startDestination = "LOGIN"){
 
         composable(route = "LOGIN"){
             Login(mainActivityCallback = mainActivityCallback,navController,modifier)

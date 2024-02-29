@@ -53,17 +53,27 @@ fun CreateTournament(navController: NavController, modifier: Modifier=Modifier){
 }
 @Composable
 fun TopBarCreateTournament(navController: NavController,modifier: Modifier = Modifier){
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .background(Color.Black)
-            .fillMaxWidth()
-    ){
-        Text(
-            text = stringResource(id = R.string.create_tournament),
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineLarge,
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .background(Color.Black)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(id = R.string.create_tournament),
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineLarge,
+            )
+        }
+        Image(
+            painter = painterResource(id = R.drawable.blue_line),
+            contentDescription = "Blue Line",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(2.dp)
+                .fillMaxWidth()
         )
     }
 }
@@ -121,9 +131,9 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                 keyboardType = KeyboardType.Number,
                 imeaction = ImeAction.Next
             )
-            Button(onClick = { navController.navigate("CREATETOURNAMENTCHESS") }) {
+            Button(onClick = { navController.navigate("MYTOURNAMENTS") }) {
                 Text(
-                    text = "NEXT"
+                    text = "CREATE"
                 )
             }
         }

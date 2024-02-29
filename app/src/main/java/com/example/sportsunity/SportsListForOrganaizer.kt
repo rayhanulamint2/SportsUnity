@@ -141,7 +141,7 @@ fun SportListCard(navController: NavController, sportlist: SportsList, modifier:
         modifier = modifier
             .fillMaxWidth(.8f)
             .clickable {
-                navController.navigate("AFTERSIGNUP")
+                navController.navigate("CREATETOURNAMENTCHESS")
             }
 
     ){

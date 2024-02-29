@@ -102,7 +102,7 @@ fun BackButtonFromMyTournaments(onClick: () -> Unit) {
         modifier = Modifier
             .size(40.dp)
             .padding(top = 5.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-85).dp, y = 4.dp)
+            .absoluteOffset(x = (-40).dp, y = 4.dp)
 //                    .align(Alignment.Start)
             .clickable { onClick() }
     )
@@ -138,7 +138,7 @@ fun MyTournamentList(navController: NavController,mytournamentList: List<Running
 fun MyTournamentCard(navController: NavController, mytournament: RunningTournament, modifier:Modifier = Modifier){
     Card(
         modifier = modifier.clickable {
-            navController.navigate("AFTERSIGNUP")
+            navController.navigate("SPORTSLISTFORORGANAIZER")
         }
 
     ){

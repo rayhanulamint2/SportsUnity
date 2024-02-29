@@ -71,17 +71,27 @@ fun Home(navController: NavController,modifier: Modifier = Modifier) {
 
 @Composable
 fun TopBar(navController: NavController,modifier: Modifier = Modifier){
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .background(Color.Black)
-            .fillMaxWidth()
-    ){
-        Text(
-            text = stringResource(id = R.string.app_name),
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium,
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .background(Color.Black)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+            )
+        }
+        Image(
+            painter = painterResource(id = R.drawable.blue_line),
+            contentDescription = "Blue Line",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(2.dp)
+                .fillMaxWidth()
         )
     }
 }
