@@ -46,7 +46,7 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun Login(navController: NavHostController,modifier: Modifier = Modifier) {
+fun Login(mainActivityCallback: MainActivityCallback,navController: NavHostController,modifier: Modifier = Modifier) {
     Box (modifier = Modifier.fillMaxSize()){
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -94,20 +94,23 @@ fun Login(navController: NavHostController,modifier: Modifier = Modifier) {
                         mutableStateOf("")
                     }
                     Spacer(modifier = Modifier.height(20.dp))
-                    CreateTextField(
+                    email = CreateTextField(
                         label = "Enter your email",
                         keyboardType = KeyboardType.Text,
                         imeaction = ImeAction.Next,
                         icon = Icons.Filled.Email
                     )
-                    CreateTextField(
+                    password = CreateTextField(
                         label = "Enter your password",
                         keyboardType = KeyboardType.Password,
                         imeaction = ImeAction.Go,
                         icon = Icons.Filled.Lock
                     )
                     Button(
-                        onClick = { navController.navigate("HOME") },
+                        onClick = {
+                            mainActivityCallback.login(email = email,password =  password,navController = navController)
+
+                                  },
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .padding(10.dp)
