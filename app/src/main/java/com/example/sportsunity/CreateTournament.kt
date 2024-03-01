@@ -1,5 +1,6 @@
 package com.example.sportsunity
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,13 +8,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -77,6 +84,7 @@ fun TopBarCreateTournament(navController: NavController,modifier: Modifier = Mod
         )
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun myContentCreateTournament(navController: NavController, innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize()) {
@@ -90,37 +98,125 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            var sports by rememberSaveable {
+                mutableStateOf("")
+            }
+            var volunteer by rememberSaveable {
+                mutableStateOf("")
+            }
             Image(
                 painter = painterResource(id = R.drawable.image_5),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth()
             )
+
             CreateTextFieldTournament(
                 label = "Set Tournament Name",
                 keyboardType = KeyboardType.Text,
                 imeaction = ImeAction.Next
             )
-            CreateTextFieldTournament(
-                label = "Sports Type",
-                keyboardType = KeyboardType.Text,
-                imeaction = ImeAction.Next
+//            CreateTextFieldTournament(
+//                label = "Sports Type",
+//                keyboardType = KeyboardType.Text,
+//                imeaction = ImeAction.Next
+//            )
+            OutlinedTextField(
+                modifier = Modifier// Add border to TextField
+                    .fillMaxWidth()
+                    .padding(5.dp),
+//            .height(50.dp),
+                value = sports,
+                onValueChange = { sports = it },
+                label = {
+                    Text(text = "Sports Type")
+
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                shape = RoundedCornerShape(30),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = Color.White,
+                    focusedBorderColor = Color(0xFF87CEEB),
+                    focusedLabelColor = Color.Gray,
+                    cursorColor = Color.White,
+                    containerColor = Color.Black
+
+                ),
+                trailingIcon = {
+                    Box(
+                        modifier = Modifier.padding(end = 16.dp)
+                    ) {
+                        IconButton(
+                            onClick = { /* Handle trailing icon click here */ }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Add",
+                                tint = Color.Gray // Customize the color of the icon
+                            )
+                        }
+                    }
+                }
             )
-            CreateTextFieldTournament(
-                label = "Add Sports Type",
-                keyboardType = KeyboardType.Text,
-                imeaction = ImeAction.Next
+
+//            CreateTextFieldTournament(
+//                label = "Add Sports Type",
+//                keyboardType = KeyboardType.Text,
+//                imeaction = ImeAction.Next
+//            )
+//            CreateTextFieldTournament(
+//                label = "Volunteers",
+//                keyboardType = KeyboardType.Text,
+//                imeaction = ImeAction.Next
+//            )
+            OutlinedTextField(
+                modifier = Modifier// Add border to TextField
+                    .fillMaxWidth()
+                    .padding(5.dp),
+//            .height(50.dp),
+                value = volunteer,
+                onValueChange = { volunteer = it },
+                label = {
+                    Text(text = "Volunteer")
+
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                shape = RoundedCornerShape(30),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = Color.White,
+                    focusedBorderColor = Color(0xFF87CEEB),
+                    focusedLabelColor = Color.Gray,
+                    cursorColor = Color.White,
+                    containerColor = Color.Black
+
+                ),
+                trailingIcon = {
+                    Box(
+                        modifier = Modifier.padding(end = 16.dp)
+                    ) {
+                        IconButton(
+                            onClick = { /* Handle trailing icon click here */ }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Add",
+                                tint = Color.Gray // Customize the color of the icon
+                            )
+                        }
+                    }
+                }
             )
-            CreateTextFieldTournament(
-                label = "Volunteers",
-                keyboardType = KeyboardType.Text,
-                imeaction = ImeAction.Next
-            )
-            CreateTextFieldTournament(
-                label = "Add Volunteers",
-                keyboardType = KeyboardType.Text,
-                imeaction = ImeAction.Next
-            )
+//            CreateTextFieldTournament(
+//                label = "Add Volunteers",
+//                keyboardType = KeyboardType.Text,
+//                imeaction = ImeAction.Next
+//            )
             CreateTextFieldTournament(
                 label = "Start Time",
                 keyboardType = KeyboardType.Number,
@@ -131,11 +227,13 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                 keyboardType = KeyboardType.Number,
                 imeaction = ImeAction.Next
             )
+            Spacer(modifier = Modifier.height(40.dp))
             Button(onClick = { navController.navigate("MYTOURNAMENTS") }) {
                 Text(
                     text = "CREATE"
                 )
             }
+
         }
     }
 }
@@ -151,8 +249,8 @@ fun CreateTextFieldTournament(
     OutlinedTextField(
         modifier = Modifier// Add border to TextField
             .fillMaxWidth()
-            .padding(5.dp)
-            .height(50.dp),
+            .padding(5.dp),
+//            .height(50.dp),
         value = text,
         onValueChange = { text = it },
         label = {
@@ -165,11 +263,11 @@ fun CreateTextFieldTournament(
         ),
         shape = RoundedCornerShape(30),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.Black,
+            textColor = Color.White,
             focusedBorderColor = Color(0xFF87CEEB),
             focusedLabelColor = Color.Gray,
-            cursorColor = Color.Black,
-            containerColor = Color.White
+            cursorColor = Color.White,
+            containerColor = Color.Black
 
         )
     )

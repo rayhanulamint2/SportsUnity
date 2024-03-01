@@ -2,12 +2,14 @@ package com.example.sportsunity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,19 +53,48 @@ fun MyProfile(navController:NavController, modifier: Modifier) {
 
 @Composable
 fun TopBarMyProfile(navController: NavController){
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .background(Color.Black)
-            .fillMaxWidth()
-    ){
-        Text(
-            text = stringResource(id = R.string.app_name),
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .background(Color.Black)
+                .fillMaxWidth()
+        ) {
+            NavigationFromMyProfile {
+                navController.navigate("LOGIN")
+            }
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium
+            )
+        }
+        Image(
+            painter = painterResource(id = R.drawable.blue_line),
+            contentDescription = "Blue Line",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(2.dp)
+                .fillMaxWidth()
         )
     }
+}
+
+@Composable
+fun NavigationFromMyProfile(onClick: () -> Unit) {
+    val image: Painter = painterResource(id = R.drawable.menu_1)
+    Image(
+        painter = image,
+        contentDescription = "Back Button",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(40.dp)
+            .padding(top = 0.dp, bottom = 5.dp)
+            .absoluteOffset(x = (-90).dp, y = 4.dp)
+//                    .align(Alignment.Start)
+            .clickable { onClick() }
+    )
 }
 
 @Composable

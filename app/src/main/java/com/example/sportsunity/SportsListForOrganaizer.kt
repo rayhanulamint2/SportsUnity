@@ -40,10 +40,10 @@ import com.example.sportsunity.model.SportsList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SportsListForOrganaizer(navController: NavController,tournamentName: String = "CSE Indoor Tournament",modifier: Modifier = Modifier){
+fun SportsListForOrganaizer(navController: NavController,modifier: Modifier = Modifier){
     val paddingValues = 10.dp
     Scaffold(
-        topBar = { TopBarSportsList(navController = navController,tournamentName = tournamentName) },
+        topBar = { TopBarSportsList(navController = navController) },
         content = {innerpadding->
 //            myContent(navController,innerpadding)
             myContentSportsListForOrganaizer(navController = navController, innerpadding = innerpadding )
@@ -52,7 +52,7 @@ fun SportsListForOrganaizer(navController: NavController,tournamentName: String 
 
 }
 @Composable
-fun TopBarSportsList(navController: NavController,tournamentName: String){
+fun TopBarSportsList(navController: NavController){
     Column {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -64,7 +64,7 @@ fun TopBarSportsList(navController: NavController,tournamentName: String){
                 navController.navigate("HOME")
             }
             Text(
-                text = tournamentName,
+                text = "SPORTS LIST",
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineSmall,
@@ -94,8 +94,8 @@ fun BackButtonFromSportsListForOrganaizer(onClick: () -> Unit) {
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .size(40.dp)
-            .padding(top = 5.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-40).dp, y = 4.dp)
+            .padding(top = 0.dp, bottom = 5.dp)
+            .absoluteOffset(x = (-90).dp, y = 4.dp)
 //                    .align(Alignment.Start)
             .clickable { onClick() }
     )
@@ -120,12 +120,12 @@ fun SportsList(navController: NavController, sportlist: List<SportsList>, modifi
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "SPORTS LIST",
-            color = Color.White,
-            fontSize = 36.sp,
-
-            )
+//        Text(
+//            text = "SPORTS LIST",
+//            color = Color.White,
+//            fontSize = 36.sp,
+//
+//            )
         LazyColumn(modifier = modifier.padding(top = 50.dp)) {
             items(sportlist) { mysport ->
                 SportListCard(
@@ -141,7 +141,7 @@ fun SportsList(navController: NavController, sportlist: List<SportsList>, modifi
 fun SportListCard(navController: NavController, sportlist: SportsList, modifier:Modifier = Modifier){
     Card(
         modifier = modifier
-            .fillMaxWidth(.8f)
+            .fillMaxWidth(.5f)
             .clickable {
                 navController.navigate("NEWMATCHCREATION")
             },
@@ -152,12 +152,13 @@ fun SportListCard(navController: NavController, sportlist: SportsList, modifier:
 
         Text(
             text = LocalContext.current.getString(sportlist.stringResourceId1),
-            color = Color.Black,
+            color = Color.White,
             fontSize = 20.sp,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
 //                .align(Alignment.Center)
-                .padding(top = 10.dp,end = 10.dp,)
+                .padding(10.dp)
 //                            style = MaterialTheme.typography.headlineSmall
         )
 

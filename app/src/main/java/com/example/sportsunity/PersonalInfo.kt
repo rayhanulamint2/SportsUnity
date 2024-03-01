@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -86,19 +87,19 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             var name by rememberSaveable {
-                mutableStateOf("Tanvir")
+                mutableStateOf("")
             }
             var university by rememberSaveable {
-                mutableStateOf("university")
+                mutableStateOf("")
             }
             var email by rememberSaveable {
-                mutableStateOf("email")
+                mutableStateOf("")
             }
             var contact by rememberSaveable {
-                mutableStateOf("contact")
+                mutableStateOf("")
             }
             var password by rememberSaveable {
-                mutableStateOf("password")
+                mutableStateOf("")
             }
 //            Box(){
 //                Image(
@@ -118,11 +119,19 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
                     Image(
                         painter = painterResource(id = R.drawable.ellipse_1),
                         contentDescription = "user's photo",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 10.dp)
+                            .height(100.dp)
+                            .width(100.dp),
+                        alignment = Alignment.TopCenter
                     )
                     Text(
                         text = "Name",
                         color = Color.White,
+                        modifier = Modifier
+                            .fillMaxWidth(.75f)
+                            .padding(bottom = 0.dp),
                         textAlign = TextAlign.Start
                     )
                     name = CreateTextFieldPersonalInfo(
@@ -134,6 +143,7 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
                     Text(
                         text = "University Name",
                         color = Color.White,
+                        modifier = Modifier.fillMaxWidth(.75f),
                         textAlign = TextAlign.Start
                     )
                     university = CreateTextFieldPersonalInfo(
@@ -145,6 +155,7 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
                     Text(
                         text = "Email",
                         color = Color.White,
+                        modifier = Modifier.fillMaxWidth(.75f),
                         textAlign = TextAlign.Start
                     )
                     email = CreateTextFieldPersonalInfo(
@@ -156,6 +167,7 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
                     Text(
                         text = "Contact Number",
                         color = Color.White,
+                        modifier = Modifier.fillMaxWidth(.75f),
                         textAlign = TextAlign.Start
                     )
                     contact = CreateTextFieldPersonalInfo(
@@ -167,6 +179,7 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
                     Text(
                         text = "Password",
                         color = Color.White,
+                        modifier = Modifier.fillMaxWidth(.75f),
                         textAlign = TextAlign.Start
                     )
                     password = CreateTextFieldPersonalInfo(
@@ -211,11 +224,11 @@ fun CreateTextFieldPersonalInfo(
         ),
         shape = RoundedCornerShape(30),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.Black,
+            textColor = Color.White,
             focusedBorderColor = Color(0xFF87CEEB),
             focusedLabelColor = Color.Gray,
-            cursorColor = Color.Black,
-            containerColor = Color.White
+            cursorColor = Color.White,
+            containerColor = Color.Black
 
         )
     )

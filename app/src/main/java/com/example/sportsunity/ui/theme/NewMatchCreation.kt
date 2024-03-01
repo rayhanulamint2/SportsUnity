@@ -3,7 +3,6 @@ package com.example.sportsunity.ui.theme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,16 +39,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.sportsunity.BackButtonFromMyTournaments
-import com.example.sportsunity.MyTournamentList
 import com.example.sportsunity.R
-import com.example.sportsunity.TopBarMyTournaments
-import com.example.sportsunity.data.DataSourceForMyTournament
-import com.example.sportsunity.myContentMyTournaments
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewMatchCreation(navController: NavController,modifier:Modifier = Modifier){
+fun NewMatchCreation(text: String, navController: NavController, modifier: Modifier = Modifier){
     Scaffold(
         topBar = { TopBarNewMatchCreation(navController) },
         content = {innerpadding->
