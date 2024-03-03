@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -29,6 +31,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,43 +51,84 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateTournament(navController: NavController, modifier: Modifier=Modifier){
+fun CreateTournament(navController: NavController,viewModel: SharedViewModel, modifier: Modifier=Modifier){
     Scaffold(
-        topBar = { TopBarCreateTournament(navController) },
+        topBar = {
+//            TopBarCreateTournament(navController)
+            Column {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = viewModel.getTopBar(),
+                            color = Color.White
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+
+                        }) {
+                            //                                 Icon(
+                            //                                     imageVector = Icons.Default.Menu,
+                            //                                     contentDescription = null,
+                            //                                     tint = Color.White
+                            //                                 )
+                            Image(
+                                painter = painterResource(id = R.drawable.back_button),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .width(50.dp)
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors(Color.Black)
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.blue_line),
+                    contentDescription = "Blue Line",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(2.dp)
+                        .fillMaxWidth()
+                )
+            }
+                 },
         content = {innerpadding->
             myContentCreateTournament(navController,innerpadding)
         }
     )
 }
-@Composable
-fun TopBarCreateTournament(navController: NavController,modifier: Modifier = Modifier){
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(Color.Black)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = stringResource(id = R.string.create_tournament),
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineLarge,
-            )
-        }
-        Image(
-            painter = painterResource(id = R.drawable.blue_line),
-            contentDescription = "Blue Line",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .height(2.dp)
-                .fillMaxWidth()
-        )
-    }
-}
+//@Composable
+//fun TopBarCreateTournament(navController: NavController,modifier: Modifier = Modifier){
+//    Column {
+//        Row(
+//            horizontalArrangement = Arrangement.Center,
+//            modifier = Modifier
+//                .background(Color.Black)
+//                .fillMaxWidth()
+//        ) {
+//            Text(
+//                text = stringResource(id = R.string.create_tournament),
+//                color = Color.White,
+//                textAlign = TextAlign.Center,
+//                style = MaterialTheme.typography.headlineLarge,
+//            )
+//        }
+//        Image(
+//            painter = painterResource(id = R.drawable.blue_line),
+//            contentDescription = "Blue Line",
+//            contentScale = ContentScale.Crop,
+//            modifier = Modifier
+//                .height(2.dp)
+//                .fillMaxWidth()
+//        )
+//    }
+//}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun myContentCreateTournament(navController: NavController, innerpadding: PaddingValues){
@@ -104,12 +149,20 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
             var volunteer by rememberSaveable {
                 mutableStateOf("")
             }
+
             Image(
                 painter = painterResource(id = R.drawable.image_5),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth()
+                alpha = .8f,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 60.dp)
             )
+//            IconButton(onClick = { /*TODO*/ }) {
+//                Icon(imageVector = Icons.Default.Add, contentDescription = "banner", tint = Color.White)
+//            }
+
 
             CreateTextFieldTournament(
                 label = "Set Tournament Name",

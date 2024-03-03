@@ -38,7 +38,9 @@ import androidx.navigation.NavController
 @Composable
 fun CreateTournamentChess(navController: NavController,modifier: Modifier = Modifier){
     Scaffold(
-        topBar = { TopBarCreateTournament(navController) },
+        topBar = {
+//            TopBarCreateTournament(navController)
+                 },
         content = {innerpadding->
             myContentCreateTournamentChess(navController,innerpadding)
         }

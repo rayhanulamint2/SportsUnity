@@ -21,9 +21,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +47,46 @@ import androidx.navigation.NavController
 @Composable
 fun MyProfile(navController:NavController, modifier: Modifier) {
     Scaffold(
-        topBar = { TopBarMyProfile(navController) },
+        topBar = {
+//            TopBarMyProfile(navController)
+            Column {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "My Profile",
+                            color = Color.White
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            navController.navigate("HOME")
+                        }) {
+                            //                                 Icon(
+                            //                                     imageVector = Icons.Default.Menu,
+                            //                                     contentDescription = null,
+                            //                                     tint = Color.White
+                            //                                 )
+                            Image(
+                                painter = painterResource(id = R.drawable.back_button),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .width(50.dp)
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors(Color.Black)
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.blue_line),
+                    contentDescription = "Blue Line",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(2.dp)
+                        .fillMaxWidth()
+                )
+            }
+                 },
         content = {innerpadding->
             myContentMyProfile(navController,innerpadding)
         }
@@ -83,7 +125,7 @@ fun TopBarMyProfile(navController: NavController){
 
 @Composable
 fun NavigationFromMyProfile(onClick: () -> Unit) {
-    val image: Painter = painterResource(id = R.drawable.menu_1)
+    val image: Painter = painterResource(id = R.drawable.back_button)
     Image(
         painter = image,
         contentDescription = "Back Button",

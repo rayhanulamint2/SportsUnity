@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -69,14 +70,15 @@ fun SignUp(mainActivityCallback: MainActivityCallback,navController: NavHostCont
             horizontalAlignment = Alignment.CenterHorizontally,
             
         ) {
+            Spacer(modifier = Modifier.height(10.dp))
             Image(
                 painter = painterResource(id = R.drawable.ellipse_1),
                 contentDescription = null,
 //                modifier = Modifier.size(96.dp),
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.height(100.dp).width(100.dp)
             )
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Box(
                 modifier = Modifier.padding(10.dp),
                 contentAlignment = Alignment.Center

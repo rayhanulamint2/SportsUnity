@@ -14,14 +14,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,15 +39,55 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 import com.example.sportsunity.data.DataSourceForSportList
 import com.example.sportsunity.model.SportsList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SportsListForOrganaizer(navController: NavController,modifier: Modifier = Modifier){
+fun SportsListForOrganaizer(navController: NavController,viewModel: SharedViewModel,modifier: Modifier = Modifier){
     val paddingValues = 10.dp
     Scaffold(
-        topBar = { TopBarSportsList(navController = navController) },
+        topBar = {
+//            TopBarSportsList(navController = navController)
+            Column {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = viewModel.getTopBar(),
+                            color = Color.White
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            navController.navigate("HOME")
+                        }) {
+                            //                                 Icon(
+                            //                                     imageVector = Icons.Default.Menu,
+                            //                                     contentDescription = null,
+                            //                                     tint = Color.White
+                            //                                 )
+                            Image(
+                                painter = painterResource(id = R.drawable.back_button),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .width(50.dp)
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors(Color.Black)
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.blue_line),
+                    contentDescription = "Blue Line",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(2.dp)
+                        .fillMaxWidth()
+                )
+            }
+                 },
         content = {innerpadding->
 //            myContent(navController,innerpadding)
             myContentSportsListForOrganaizer(navController = navController, innerpadding = innerpadding )

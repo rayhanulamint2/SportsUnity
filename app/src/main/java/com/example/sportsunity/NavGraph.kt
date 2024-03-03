@@ -2,9 +2,11 @@ package com.example.sportsunity
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 import com.example.sportsunity.ui.theme.NewMatchCreation
 import com.google.firebase.auth.FirebaseUser
 
@@ -12,7 +14,9 @@ import com.google.firebase.auth.FirebaseUser
 fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:Modifier = Modifier){
     val navController = rememberNavController()
     val text = "tanvir"
-    NavHost(navController = navController, startDestination = "PERSONALINFO"){
+    val viewModel: SharedViewModel = viewModel()
+    val topBar = viewModel.getTopBar()
+    NavHost(navController = navController, startDestination = "WINNERLIST"){
 
         composable(route = "LOGIN"){
             Login(mainActivityCallback = mainActivityCallback,navController,modifier)
@@ -21,10 +25,12 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
             SignUp(mainActivityCallback = mainActivityCallback,navController,modifier)
         }
         composable(route = "HOME"){
-            Home(navController,modifier)
+            viewModel.setTopBar("SPORTSUNITY")
+            Home(navController,viewModel,modifier)
         }
         composable(route = "CREATETOURNAMENT"){
-            CreateTournament(navController,modifier)
+            viewModel.setTopBar("Create Tournament")
+            CreateTournament(navController,viewModel,modifier)
         }
         composable(route = "CREATETOURNAMENTCHESS"){
             CreateTournamentChess(navController,modifier)
@@ -53,7 +59,8 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
             MyTournaments(navController = navController,modifier)
         }
         composable(route = "SPORTSLISTFORORGANAIZER"){
-            SportsListForOrganaizer(navController = navController,modifier = modifier)
+            viewModel.setTopBar("Sports List")
+            SportsListForOrganaizer(navController = navController,viewModel,modifier = modifier)
         }
         composable(route = "NEWMATCHCREATION"){
             NewMatchCreation(text,navController = navController,modifier = modifier)
