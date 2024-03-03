@@ -1,5 +1,7 @@
 package com.example.sportsunity
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -10,13 +12,14 @@ import com.example.sportsunity.SharedViewModel.SharedViewModel
 import com.example.sportsunity.ui.theme.NewMatchCreation
 import com.google.firebase.auth.FirebaseUser
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:Modifier = Modifier){
     val navController = rememberNavController()
     val text = "tanvir"
     val viewModel: SharedViewModel = viewModel()
     val topBar = viewModel.getTopBar()
-    NavHost(navController = navController, startDestination = "WINNERLIST"){
+    NavHost(navController = navController, startDestination = "TEAMWISEWINNER"){
 
         composable(route = "LOGIN"){
             Login(mainActivityCallback = mainActivityCallback,navController,modifier)
@@ -33,7 +36,7 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
             CreateTournament(navController,viewModel,modifier)
         }
         composable(route = "CREATETOURNAMENTCHESS"){
-            CreateTournamentChess(navController,modifier)
+            CreateTournamentChess(navController,viewModel,modifier)
         }
 
         composable(route = "AFTERSIGNUP"){
@@ -70,6 +73,18 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
         }
         composable(route = "WINNERSELECTION"){
             WinnerSelection(navController = navController,modifier = modifier)
+        }
+        composable(route = "FOOTBALL"){
+            FootBall(navController = navController,viewModel = viewModel,modifier = modifier)
+        }
+        composable(route = "TEAMWISEWINNER"){
+            TeamWiseWinner(navController = navController,viewModel = viewModel,modifier = modifier)
+        }
+        composable(route = "INDIVIDUALTEAM"){
+            IndividualTeam(navController = navController,viewModel = viewModel,modifier = modifier)
+        }
+        composable(route = "FOOTBALLUPDATE"){
+            FootBallUpdate(navController = navController,viewModel = viewModel,modifier = modifier)
         }
 
 

@@ -26,14 +26,28 @@
     <string name="chess">CHESS</string>
     <string name="ludo">LUDO</string>
     <string name="carrom">CARROM</string>
+    <string name="football">FOOTBALL</string>
     <string name="create_match">Create a New Match</string>
-    <string name="winner1">Khalid Bin Selim</string>
-    <string name="winner2">Rayhanul Amin Tanvir</string>
-    <string name="winner3">Abhishek Das</string>
-    <string name="winner4">Gazi Muztaba Rafid </string>
+    <string name="winner1">Selim</string>
+    <string name="losser1">Khalid Bin </string>
+    <string name="winner2">Rayhanul Amin</string>
+    <string name="losser2">Tanvir</string>
+    <string name="winner3">Abhishek</string>
+    <string name="losser3">Das</string>
+    <string name="winner4">Gazi Mujtaba</string>
+    <string name="losser4">Rafid</string>
     <string name="round1">1</string>
     <string name="round2">2</string>
     <string name="name">Name</string>
     <string name="round">Round</string>
+    <string name="val_1">1</string>
+    <string name="val_2">2</string>
+    <string name="val_3">3</string>
+    <string name="val_4">4</string>
+    <string name="val_5">5</string>
+    <string name="val_6">6</string>
+    <string name="val_7">7</string>
+    <string name="val_8">8</string>
+    <string name="val_9">9</string>
 
 </resources>

@@ -4,6 +4,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.sportsunity.R
 import com.example.sportsunity.model.RunningTournament
 import com.example.sportsunity.model.SportsList
+import com.example.sportsunity.model.TeamWiseWinner
 import com.example.sportsunity.model.WinnerList
 
 class DataSource {
@@ -29,7 +30,8 @@ class DataSourceForSportList{
         return listOf<SportsList>(
             SportsList(stringResourceId1 = R.string.chess),
             SportsList(R.string.ludo),
-            SportsList(R.string.carrom)
+            SportsList(R.string.carrom),
+            SportsList(R.string.football)
         )
     }
 }
@@ -37,10 +39,21 @@ class DataSourceForSportList{
 class DataSourceForWinnerList{
     fun loadWinnerList(): List<WinnerList>{
         return listOf<WinnerList>(
-            WinnerList(R.string.winner1,R.string.round1),
-            WinnerList(R.string.winner2,R.string.round2),
-            WinnerList(R.string.winner3,R.string.round1),
-            WinnerList(R.string.winner4,R.string.round2),
+            WinnerList(R.string.winner1,R.string.round1,R.string.losser1),
+            WinnerList(R.string.winner2,R.string.round2,R.string.losser2),
+            WinnerList(R.string.winner3,R.string.round1,R.string.losser3),
+            WinnerList(R.string.winner4,R.string.round2,R.string.losser4),
         )
     }
 }
+class DataSourceTeamWiseWinner{
+    fun loadTeamWiseWinner(): List<TeamWiseWinner>{
+        return listOf<TeamWiseWinner>(
+            TeamWiseWinner(R.string.winner1,R.string.losser1,R.string.val_3,R.string.val_6),
+            TeamWiseWinner(R.string.winner2,R.string.losser2,R.string.val_4,R.string.val_8),
+            TeamWiseWinner(R.string.winner3,R.string.losser3,R.string.val_3,R.string.val_4),
+            TeamWiseWinner(R.string.winner4,R.string.losser4,R.string.val_4,R.string.val_5),
+        )
+    }
+}
+

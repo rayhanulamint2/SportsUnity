@@ -199,12 +199,22 @@ fun WinnerListCard(navController: NavController,winnerlist: WinnerList,modifier:
                 modifier = Modifier.weight(.8f)
             ) {
                 Text(
-                    text = "Name:",
+                    text = "Winner:",
                     fontSize = 13.sp,
                     color = Color.White
                 )
                 Text(
                     text = stringResource(winnerlist.stringResourceId1),
+                    color = Color.White,
+                    fontSize = 17.sp,
+                )
+                Text(
+                    text = "Losser:",
+                    fontSize = 13.sp,
+                    color = Color.White
+                )
+                Text(
+                    text = stringResource(winnerlist.stringResourceId3),
                     color = Color.White,
                     fontSize = 17.sp,
                 )
@@ -230,70 +240,3 @@ fun WinnerListCard(navController: NavController,winnerlist: WinnerList,modifier:
     }
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun WinnerListCard(navController: NavController, winnerlist: WinnerList, modifier:Modifier = Modifier){
-////    Text(
-////        text = LocalContext.current.getString(winnerlist.stringResourceId),
-////        color = Color.Black,
-////        fontSize = 20.sp,
-////        modifier = Modifier.padding(top = 10.dp, start = 16.dp),
-////        //                style = MaterialTheme.typography.headlineSmall
-////    )
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(2.dp)
-//    ) {
-//        var text by rememberSaveable {
-//            mutableStateOf("")
-//        }
-//        var round by rememberSaveable {
-//            mutableStateOf("")
-//        }
-//        Text(
-//            text = LocalContext.current.getString(winnerlist.stringResourceId1),
-//            color = Color.White,
-//            modifier = Modifier
-//                .padding(10.dp)
-//                .weight(.7f),
-//        )
-//        Text(
-//            text = LocalContext.current.getString(winnerlist.stringResourceId2),
-//            color = Color.White,
-//            modifier = Modifier
-//                .padding(10.dp)
-//                .weight(.7f)
-//        )
-////        OutlinedTextField(
-////            value = LocalContext.current.getString(winnerlist.stringResourceId1),
-////            onValueChange = {text = it},
-////            enabled = true,
-////            shape = RoundedCornerShape(30),
-////            colors = TextFieldDefaults.outlinedTextFieldColors(
-////                textColor = androidx.compose.ui.graphics.Color.White,
-////                focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
-////                cursorColor = androidx.compose.ui.graphics.Color.Black,
-////                containerColor = colorResource(id = R.color.maastricht_Blue)
-////
-////            ),
-////            modifier = Modifier.padding(10.dp).weight(.7f)
-////        )
-////        OutlinedTextField(
-////            value = LocalContext.current.getString(winnerlist.stringResourceId2),
-////            onValueChange = {text = it},
-////            enabled = true,
-////            shape = RoundedCornerShape(30),
-////            colors = TextFieldDefaults.outlinedTextFieldColors(
-////                textColor = androidx.compose.ui.graphics.Color.White,
-////                focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
-////                cursorColor = androidx.compose.ui.graphics.Color.Black,
-////                containerColor = colorResource(id = R.color.maastricht_Blue)
-////
-////            ),
-////            modifier = Modifier.padding(10.dp).weight(.3f)
-////        )
-//    }
-//
-//
-//}
