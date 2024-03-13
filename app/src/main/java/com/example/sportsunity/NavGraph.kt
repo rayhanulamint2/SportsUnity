@@ -14,18 +14,20 @@ import com.google.firebase.auth.FirebaseUser
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:Modifier = Modifier){
+fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,user: FirebaseUser,modifier:Modifier = Modifier){
     val navController = rememberNavController()
+
     val text = "tanvir"
-    val viewModel: SharedViewModel = viewModel()
+    val sportName = "Chess"
+    val footballTeam = ""
     val topBar = viewModel.getTopBar()
-    NavHost(navController = navController, startDestination = "TEAMWISEWINNER"){
+    NavHost(navController = navController, startDestination = "HOME"){
 
         composable(route = "LOGIN"){
-            Login(mainActivityCallback = mainActivityCallback,navController,modifier)
+            Login(mainActivityCallback = mainActivityCallback,viewModel = viewModel,navController,modifier)
         }
         composable(route = "SIGNUP"){
-            SignUp(mainActivityCallback = mainActivityCallback,navController,modifier)
+            SignUp(mainActivityCallback = mainActivityCallback,viewModel = viewModel,navController,modifier)
         }
         composable(route = "HOME"){
             viewModel.setTopBar("SPORTSUNITY")
@@ -43,6 +45,7 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
             AfterSignUp(navController = navController, modifier = modifier)
         }
         composable(route = "MYPROFILE"){
+            viewModel.setTopBar("My Profile")
             MyProfile(navController = navController, modifier = modifier)
         }
 
@@ -51,7 +54,7 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
             Confirmation(navController = navController,modifier)
         }
         composable(route = "PERSONALINFO"){
-            PersonalInfo(navController = navController,modifier)
+            PersonalInfo(navController = navController,viewModel = viewModel,modifier)
         }
 
         composable(route = "PARTICIPATIONS"){
@@ -59,6 +62,7 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
         }
 
         composable(route = "MYTOURNAMENTS"){
+            viewModel.setTopBar("My Tournaments")
             MyTournaments(navController = navController,modifier)
         }
         composable(route = "SPORTSLISTFORORGANAIZER"){
@@ -66,24 +70,31 @@ fun Nav(mainActivityCallback: MainActivityCallback,user: FirebaseUser,modifier:M
             SportsListForOrganaizer(navController = navController,viewModel,modifier = modifier)
         }
         composable(route = "NEWMATCHCREATION"){
+            viewModel.setTopBar(sportName)
             NewMatchCreation(text,navController = navController,modifier = modifier)
         }
         composable(route = "WINNERLIST"){
+            viewModel.setTopBar("Winner List")
             WinnerList(navController = navController,modifier = modifier)
         }
         composable(route = "WINNERSELECTION"){
+            viewModel.setTopBar(sportName)
             WinnerSelection(navController = navController,modifier = modifier)
         }
         composable(route = "FOOTBALL"){
+            viewModel.setTopBar("Football")
             FootBall(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "TEAMWISEWINNER"){
+            viewModel.setTopBar("Football")
             TeamWiseWinner(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "INDIVIDUALTEAM"){
+            viewModel.setTopBar(footballTeam)
             IndividualTeam(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "FOOTBALLUPDATE"){
+            viewModel.setTopBar("Football")
             FootBallUpdate(navController = navController,viewModel = viewModel,modifier = modifier)
         }
 

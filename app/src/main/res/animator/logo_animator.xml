@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ExtraText">
+    android:duration = "1000"
+    <propertyValuesHolder
+        android:propertyName="rotation"
+        android:valueType="floatType"
+        android:valueFrom="0.0"
+        android:valueTo="360"/>
+    <propertyValuesHolder
+        android:propertyName="scalex"
+        android:valueType="floatType"
+        android:valueFrom="0.0"
+        android:valueTo=".4"/>
+    <propertyValuesHolder
+        android:propertyName="scaley"
+        android:valueType="floatType"
+        android:valueFrom="0.0"
+        android:valueTo=".4"/>
+
+</objectAnimator>

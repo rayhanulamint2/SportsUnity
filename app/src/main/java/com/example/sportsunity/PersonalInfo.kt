@@ -47,10 +47,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PersonalInfo(navController: NavController,modifier: Modifier = Modifier){
+fun PersonalInfo(navController: NavController,viewModel: SharedViewModel,modifier: Modifier = Modifier){
     Scaffold(
         topBar = {
 //            TopBarPersonalInfo(navController)
@@ -93,7 +94,7 @@ fun PersonalInfo(navController: NavController,modifier: Modifier = Modifier){
             }
                  },
         content = {innerpadding->
-            myContentPersonalInfo(navController,innerpadding)
+            myContentPersonalInfo(navController, viewModel = viewModel,innerpadding)
         }
     )
 }
@@ -116,7 +117,7 @@ fun PersonalInfo(navController: NavController,modifier: Modifier = Modifier){
 //}
 
 @Composable
-fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingValues){
+fun myContentPersonalInfo(navController: NavController,viewModel: SharedViewModel, innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -129,19 +130,19 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             var name by rememberSaveable {
-                mutableStateOf("")
+                mutableStateOf(viewModel.userDetails.name)
             }
             var university by rememberSaveable {
-                mutableStateOf("")
+                mutableStateOf(viewModel.userDetails.university)
             }
             var email by rememberSaveable {
-                mutableStateOf("")
+                mutableStateOf(viewModel.userDetails.email)
             }
             var contact by rememberSaveable {
-                mutableStateOf("")
+                mutableStateOf(viewModel.userDetails.contact)
             }
             var password by rememberSaveable {
-                mutableStateOf("")
+                mutableStateOf(viewModel.userDetails.password)
             }
 //            Box(){
 //                Image(
@@ -180,12 +181,14 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
 //                                .padding(bottom = 0.dp),
                             textAlign = TextAlign.Start
                         )
-                        name = CreateTextFieldPersonalInfo(
-                            maintext = name,
-                            label = "",
-                            keyboardType = KeyboardType.Text,
-                            imeaction = ImeAction.Next
-                        )
+                        name = name?.let {
+                            CreateTextFieldPersonalInfo(
+                                maintext = it,
+                                label = "",
+                                keyboardType = KeyboardType.Text,
+                                imeaction = ImeAction.Next
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Column(
@@ -197,12 +200,14 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
 //                            modifier = Modifier.fillMaxWidth(.90f),
                             textAlign = TextAlign.Start
                         )
-                        university = CreateTextFieldPersonalInfo(
-                            maintext = university,
-                            label = "",
-                            keyboardType = KeyboardType.Text,
-                            imeaction = ImeAction.Next
-                        )
+                        university = university?.let {
+                            CreateTextFieldPersonalInfo(
+                                maintext = it,
+                                label = "",
+                                keyboardType = KeyboardType.Text,
+                                imeaction = ImeAction.Next
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Column(
@@ -214,12 +219,14 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
 //                            modifier = Modifier.fillMaxWidth(.90f),
                             textAlign = TextAlign.Start
                         )
-                        email = CreateTextFieldPersonalInfo(
-                            maintext = email,
-                            label = "",
-                            keyboardType = KeyboardType.Email,
-                            imeaction = ImeAction.Next
-                        )
+                        email = email?.let {
+                            CreateTextFieldPersonalInfo(
+                                maintext = it,
+                                label = "",
+                                keyboardType = KeyboardType.Email,
+                                imeaction = ImeAction.Next
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Column(
@@ -231,12 +238,14 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
 //                            modifier = Modifier.fillMaxWidth(.75f),
                             textAlign = TextAlign.Start
                         )
-                        contact = CreateTextFieldPersonalInfo(
-                            maintext = contact,
-                            label = "",
-                            keyboardType = KeyboardType.Number,
-                            imeaction = ImeAction.Next
-                        )
+                        contact = contact?.let {
+                            CreateTextFieldPersonalInfo(
+                                maintext = it,
+                                label = "",
+                                keyboardType = KeyboardType.Number,
+                                imeaction = ImeAction.Next
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Column(
@@ -248,12 +257,14 @@ fun myContentPersonalInfo(navController: NavController, innerpadding: PaddingVal
 //                            modifier = Modifier.fillMaxWidth(.75f),
                             textAlign = TextAlign.Start
                         )
-                        password = CreateTextFieldPersonalInfo(
-                            maintext = password,
-                            label = "",
-                            keyboardType = KeyboardType.Password,
-                            imeaction = ImeAction.Done
-                        )
+                        password = password?.let {
+                            CreateTextFieldPersonalInfo(
+                                maintext = it,
+                                label = "",
+                                keyboardType = KeyboardType.Password,
+                                imeaction = ImeAction.Done
+                            )
+                        }
                     }
 
                 }
@@ -280,7 +291,7 @@ fun CreateTextFieldPersonalInfo(
             .fillMaxWidth()
 //            .padding(5.dp)
         ,
-        value = text,
+        value = maintext,
         onValueChange = { text = it },
         label = {
             Text(text = label)

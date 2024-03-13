@@ -47,7 +47,7 @@ import com.example.sportsunity.data.DataSourceForWinnerList
 fun FootBall(navController: NavController,viewModel: SharedViewModel,modifier: Modifier = Modifier){
     Scaffold(
         topBar = {
-            TopBarDesignWithBack(navController = navController, navigation = "SPORTSLISTFORORGANAIZER", header = "Football" )
+            TopBarDesignWithBack(navController = navController, navigation = "SPORTSLISTFORORGANAIZER", header = viewModel.getTopBar() )
         },
         content = {innerpadding->
             myContentFootBall(navController,viewModel,innerpadding)
@@ -142,6 +142,7 @@ fun myContentFootBall(navController: NavController, viewModel: SharedViewModel, 
                 )
             )
             val player_no = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")
+
             LazyColumn(modifier = Modifier.padding(top = 20.dp)) {
                 items(player_no) { player_no ->
                     CreateTextFieldFootBall(
@@ -154,6 +155,7 @@ fun myContentFootBall(navController: NavController, viewModel: SharedViewModel, 
             Button(onClick = { navController.navigate("HOME") }) {
                 Text(text = "ADD TEAM")
             }
+
 
         }
     }

@@ -52,11 +52,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUp(mainActivityCallback: MainActivityCallback,navController: NavHostController, modifier: Modifier = Modifier) {
+fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,navController: NavHostController, modifier: Modifier = Modifier) {
     Box (modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -76,7 +78,9 @@ fun SignUp(mainActivityCallback: MainActivityCallback,navController: NavHostCont
                 contentDescription = null,
 //                modifier = Modifier.size(96.dp),
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.height(100.dp).width(100.dp)
+                modifier = Modifier
+                    .height(100.dp)
+                    .width(100.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
             Box(
@@ -144,6 +148,13 @@ fun SignUp(mainActivityCallback: MainActivityCallback,navController: NavHostCont
                     Button(
                         onClick = {
                             mainActivityCallback.createAccount(email = email,password = password)
+                            viewModel.userUpdate(
+                                name = name,
+                                university = university,
+                                contact = mobile,
+                                email = email,
+                                password = password
+                            )
                             navController.navigate("AFTERSIGNUP")
                                   },
                         modifier = Modifier

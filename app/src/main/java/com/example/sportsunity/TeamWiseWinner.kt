@@ -92,7 +92,7 @@ fun TeamWiseWinnerCard(navController: NavController, teamwisewinner: TeamWiseWin
             modifier = Modifier.padding(20.dp)
         ){
             Column(
-                modifier = Modifier.weight(.8f)
+                modifier = Modifier.weight(.6f)
             ) {
                 Text(
                     text = "Winner Team:",
@@ -120,13 +120,30 @@ fun TeamWiseWinnerCard(navController: NavController, teamwisewinner: TeamWiseWin
                 modifier = Modifier.weight(.2f)
             ) {
                 Text(
-                    text = "Goal:",
+                    text = "Result:",
                     fontSize = 13.sp,
                     color = Color.White
 
                 )
                 Text(
                     text = stringResource(id = teamwisewinner.goal_team1)+"-"+stringResource(id = teamwisewinner.goal_team2),
+                    color = Color.White,
+                    fontSize = 17.sp
+                    //                modifier = Modifier.fillMaxWidth(.2f)
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(.2f)
+            ) {
+                Text(
+                    text = "Round:",
+                    fontSize = 13.sp,
+                    color = Color.White
+
+                )
+                Text(
+                    text = stringResource(id = teamwisewinner.stringResourceId3),
                     color = Color.White,
                     fontSize = 17.sp
                     //                modifier = Modifier.fillMaxWidth(.2f)

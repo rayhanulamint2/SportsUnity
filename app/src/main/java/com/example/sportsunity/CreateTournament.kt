@@ -2,12 +2,8 @@ package com.example.sportsunity
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.annotation.Size
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,26 +14,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -54,17 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sportsunity.SharedViewModel.SharedViewModel
@@ -72,7 +56,6 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -122,7 +105,7 @@ fun CreateTournament(navController: NavController,viewModel: SharedViewModel, mo
             }
                  },
         content = {innerpadding->
-            myContentCreateTournament(navController,innerpadding)
+            myContentCreateTournament(navController,viewModel = viewModel,innerpadding)
         }
     )
 }
@@ -156,7 +139,7 @@ fun CreateTournament(navController: NavController,viewModel: SharedViewModel, mo
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun myContentCreateTournament(navController: NavController, innerpadding: PaddingValues){
+fun myContentCreateTournament(navController: NavController,viewModel: SharedViewModel, innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -168,8 +151,14 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            var text = ""
+            var name = ""
+            var description  = ""
             var sports by rememberSaveable {
-                mutableStateOf("")
+                mutableStateOf<List<String>>(listOf())
+            }
+            var volunteers by rememberSaveable {
+                mutableStateOf<List<String>>(listOf())
             }
             var volunteer by rememberSaveable {
                 mutableStateOf("")
@@ -177,9 +166,11 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
             var start_date by rememberSaveable {
                 mutableStateOf(LocalDate.now())
             }
+//            var start_date: LocalDate? = LocalDate.now()
             var end_date by rememberSaveable {
                 mutableStateOf(LocalDate.now())
             }
+//            var end_date = LocalDate.now()
             var expanded by rememberSaveable {
                 mutableStateOf(false)
             }
@@ -200,14 +191,14 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
             val formattedStartDate by remember {
                 derivedStateOf {
                     DateTimeFormatter
-                        .ofPattern("dd-MM-yyyy")
+                        .ofPattern("yyyy-MM-dd")
                         .format(start_date)
                 }
             }
             val formattedEndDate by remember {
                 derivedStateOf {
                     DateTimeFormatter
-                        .ofPattern("dd-MM-yyyy")
+                        .ofPattern("yyyy-MM-dd")
                         .format(end_date)
                 }
             }
@@ -220,7 +211,7 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                 alpha = .8f,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
+                    .height(225.dp)
                     .padding(top = 60.dp)
             )
 //            IconButton(onClick = { /*TODO*/ }) {
@@ -228,12 +219,12 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
 //            }
 
 
-            CreateTextFieldTournament(
+            name = CreateTextFieldTournament(
                 label = "Set Tournament Name",
                 keyboardType = KeyboardType.Text,
                 imeaction = ImeAction.Next
             )
-            CreateTextFieldTournament(
+            description = CreateTextFieldTournament(
                 label = "Short Description",
                 keyboardType = KeyboardType.Text,
                 imeaction = ImeAction.Next
@@ -244,7 +235,7 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                     .padding(5.dp),
 //            .height(50.dp),
                 value = selectedItem,
-                onValueChange = { sports = it },
+                onValueChange = { selectedItem = it },
                 label = {
                     Text(text = "Select Sports Type")
 
@@ -276,7 +267,10 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                             )
                         }
                         IconButton(
-                            onClick = { sports = "" }
+                            onClick = {
+                                sports = viewModel.addInList(sports,selectedItem)
+                                selectedItem = ""
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -345,7 +339,10 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                         modifier = Modifier.padding(end = 16.dp)
                     ) {
                         IconButton(
-                            onClick = { volunteer = "" }
+                            onClick = {
+                                volunteers = viewModel.addInList(volunteers,volunteer)
+                                volunteer = ""
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -373,7 +370,7 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                     .padding(5.dp),
 //            .height(50.dp),
                 value = formattedStartDate,
-                onValueChange = { volunteer = it },
+                onValueChange = { text = it },
                 label = {
                     Text(text = "Start Date")
 
@@ -422,7 +419,7 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                     .padding(5.dp),
 //            .height(50.dp),
                 value = formattedEndDate,
-                onValueChange = { volunteer = it },
+                onValueChange = { text = it },
                 label = {
                     Text(text = "End Date")
 
@@ -483,9 +480,20 @@ fun myContentCreateTournament(navController: NavController, innerpadding: Paddin
                     }
                 }
             }
-            
-            Spacer(modifier = Modifier.height(40.dp))
-            Button(onClick = { navController.navigate("MYTOURNAMENTS") }) {
+
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(onClick = {
+                viewModel.tournamentUpdate(
+                    name = name,
+                    description = description,
+                    sports = sports,
+                    volunteers = volunteers,
+                    startDate = formattedStartDate,
+                    endDate = formattedEndDate
+                )
+                navController.navigate("MYTOURNAMENTS"
+                )
+            }) {
                 Text(
                     text = "CREATE"
                 )
@@ -502,7 +510,7 @@ fun CreateTextFieldTournament(
     keyboardType: KeyboardType,
     imeaction:ImeAction,
     modifier: Modifier = Modifier
-) {
+):String {
     var text by rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
         modifier = Modifier// Add border to TextField
@@ -529,4 +537,5 @@ fun CreateTextFieldTournament(
 
         )
     )
+    return text
 }

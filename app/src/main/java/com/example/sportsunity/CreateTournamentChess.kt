@@ -153,8 +153,8 @@ fun myContentCreateTournamentChess(navController: NavController, innerpadding: P
                         textAlign = TextAlign.Center
                     )
                 }
-                val playerList= listOf("Khalid Bin Selim", "Abhishek Das", "Rayhanul Amin Tanvir", "Gazi Mujtaba","")
-                LazyColumn(modifier = Modifier.padding(top = 40.dp)) {
+                val playerList= listOf("Khalid Bin Selim", "Abhishek Das", "Rayhanul Amin Tanvir", "Gazi Mujtaba")
+                LazyColumn(modifier = Modifier.padding(bottom = 20.dp)) {
                     items(playerList) { player ->
                         Text(
                             text = player,

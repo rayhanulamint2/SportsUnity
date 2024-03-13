@@ -1,5 +1,6 @@
 package com.example.sportsunity
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +28,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,8 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sportsunity.SharedViewModel.SharedViewModel
-import com.example.sportsunity.data.DataSourceForSportList
-import com.example.sportsunity.model.SportsList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +94,7 @@ fun SportsListForOrganaizer(navController: NavController,viewModel: SharedViewMo
                  },
         content = {innerpadding->
 //            myContent(navController,innerpadding)
-            myContentSportsListForOrganaizer(navController = navController, innerpadding = innerpadding )
+            myContentSportsListForOrganaizer(navController = navController,viewModel = viewModel, innerpadding = innerpadding )
         }
     )
 
@@ -146,7 +150,7 @@ fun BackButtonFromSportsListForOrganaizer(onClick: () -> Unit) {
 }
 
 @Composable
-fun myContentSportsListForOrganaizer(navController: NavController,innerpadding:PaddingValues){
+fun myContentSportsListForOrganaizer(navController: NavController,viewModel: SharedViewModel,innerpadding:PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -154,12 +158,25 @@ fun myContentSportsListForOrganaizer(navController: NavController,innerpadding:P
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-        SportsList(navController = navController, sportlist = DataSourceForSportList().loadSportList())
+        var doAgain by remember {
+            mutableStateOf(1)
+        }
+        LaunchedEffect(Unit) {
+            viewModel.findTournamentsDetails(viewModel.today, viewModel)
+            if(viewModel.runningTournaments.size!=0)doAgain = 3
+            else doAgain = 2
+        }
+//        SportsList(navController = navController,viewModel = viewModel, sportlist = )
     }
 }
 
 @Composable
-fun SportsList(navController: NavController, sportlist: List<SportsList>, modifier: Modifier = Modifier){
+fun SportsList(
+    navController: NavController,
+    sportlist: List<String>,
+    modifier: Modifier = Modifier,
+    viewModel: SharedViewModel
+){
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -182,7 +199,7 @@ fun SportsList(navController: NavController, sportlist: List<SportsList>, modifi
     }
 }
 @Composable
-fun SportListCard(navController: NavController, sportlist: SportsList, modifier:Modifier = Modifier){
+fun SportListCard(navController: NavController, sportlist: String, modifier:Modifier = Modifier){
     Card(
         modifier = modifier
             .fillMaxWidth(.5f)
@@ -195,7 +212,7 @@ fun SportListCard(navController: NavController, sportlist: SportsList, modifier:
 
 
         Text(
-            text = LocalContext.current.getString(sportlist.stringResourceId1),
+            text = sportlist,
             color = Color.White,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,

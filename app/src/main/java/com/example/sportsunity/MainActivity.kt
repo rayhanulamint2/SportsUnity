@@ -1,5 +1,6 @@
 package com.example.sportsunity
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -13,7 +14,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 import com.example.sportsunity.ui.theme.SportsUnityTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -22,6 +25,8 @@ import com.google.firebase.auth.auth
 class MainActivity : ComponentActivity(),MainActivityCallback {
     private lateinit var auth: FirebaseAuth
     var mainActivityCallBack = this
+    var hello = false
+
     override fun createAccount(email:String,password: String){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -53,6 +58,7 @@ class MainActivity : ComponentActivity(),MainActivityCallback {
                         "Log In Successful.",
                         Toast.LENGTH_SHORT,
                     ).show()
+                    hello = true
                     navController.navigate("HOME")
                 } else {
                     // Login failed
@@ -66,6 +72,7 @@ class MainActivity : ComponentActivity(),MainActivityCallback {
             }
     }
 
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        FirebaseApp.initializeApp(this)
@@ -78,7 +85,8 @@ class MainActivity : ComponentActivity(),MainActivityCallback {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    Firebase.auth.currentUser?.let { Nav(mainActivityCallback = mainActivityCallBack,user = it) }
+                    val viewModel: SharedViewModel = viewModel()
+                    Firebase.auth.currentUser?.let { Nav(mainActivityCallback = mainActivityCallBack,viewModel = viewModel,user = it) }
                 }
             }
         }

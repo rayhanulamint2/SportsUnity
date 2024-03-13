@@ -110,7 +110,7 @@ fun myContentMyTournaments(navController: NavController, innerpadding: PaddingVa
     }
 }
 @Composable
-fun MyTournamentList(navController: NavController,mytournamentList: List<RunningTournament>,modifier: Modifier = Modifier){
+fun MyTournamentList(navController: NavController, mytournamentList: List<RunningTournament>, modifier: Modifier = Modifier){
 
     LazyColumn(modifier = modifier.padding(top = 50.dp)){
         items(mytournamentList){ mytournament ->

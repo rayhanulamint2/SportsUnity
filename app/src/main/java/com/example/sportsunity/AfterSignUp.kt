@@ -38,7 +38,6 @@ import androidx.navigation.NavController
 @Composable
 fun AfterSignUp(navController:NavController, modifier: Modifier) {
     Scaffold(
-        topBar = { TopBarAfterSignUp(navController) },
         content = {innerpadding->
             myContentAfterSignUp(navController,innerpadding)
         }

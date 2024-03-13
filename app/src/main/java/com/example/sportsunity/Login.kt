@@ -42,11 +42,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 
 
 @Composable
-fun Login(mainActivityCallback: MainActivityCallback,navController: NavHostController,modifier: Modifier = Modifier) {
+fun Login(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,navController: NavHostController,modifier: Modifier = Modifier) {
     Box (modifier = Modifier.fillMaxSize()){
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -109,6 +111,7 @@ fun Login(mainActivityCallback: MainActivityCallback,navController: NavHostContr
                     Button(
                         onClick = {
                             mainActivityCallback.login(email = email,password =  password,navController = navController)
+                            viewModel.findUserDetails(email = email,password = password)
 
                                   },
                         modifier = Modifier
