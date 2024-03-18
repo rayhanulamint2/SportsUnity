@@ -105,7 +105,7 @@ fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modif
                     viewModel.userDetails.name?.let {
                         Text(
                             text = it,
-                            color = Color.Black,
+                            color = Color.White,
                             fontSize = 20.sp
                         )
                     }

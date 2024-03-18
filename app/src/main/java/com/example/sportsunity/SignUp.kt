@@ -120,17 +120,75 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                         stringResource(id = R.string.your_name), KeyboardType.Text, ImeAction.Next,
                         Icons.Filled.Person
                     )
-                    university = CreateTextField(
-                        stringResource(id = R.string.your_university),
-                        KeyboardType.Text,
-                        ImeAction.Next,
-                        Icons.Filled.Home
+//                    university = CreateTextField(
+//                        stringResource(id = R.string.your_university),
+//                        KeyboardType.Text,
+//                        ImeAction.Next,
+//                        Icons.Filled.Home
+//                    )
+                    OutlinedTextField(
+                        modifier = Modifier// Add border to TextField
+                            .fillMaxWidth()
+                            .padding(start = 5.dp, end = 5.dp, top = 2.dp, bottom = 2.dp),
+                        value = university,
+                        onValueChange = { university = it },
+                        label = {
+                            Text(text = stringResource(id = R.string.your_university))
+
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
+                        leadingIcon = {
+                            IconButton(onClick = { /*TODO*/ }) {
+                                Icon(painterResource(id = R.drawable.baseline_school_24), contentDescription = null)
+                            }
+                        },
+                        shape = RoundedCornerShape(30),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            textColor = androidx.compose.ui.graphics.Color.Black,
+                            focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
+                            focusedLabelColor = androidx.compose.ui.graphics.Color.Gray,
+                            cursorColor = androidx.compose.ui.graphics.Color.Black,
+                            containerColor = androidx.compose.ui.graphics.Color.White
+
+                        )
                     )
-                    registrationNo = CreateTextField(
-                        label = stringResource(id = R.string.your_regi),
-                        keyboardType = KeyboardType.Number,
-                        imeaction = ImeAction.Next,
-                        icon = Icons.Filled.Star
+//                    registrationNo = CreateTextField(
+//                        label = stringResource(id = R.string.your_regi),
+//                        keyboardType = KeyboardType.Number,
+//                        imeaction = ImeAction.Next,
+//                        icon = Icons.Filled.Star
+//                    )
+                    OutlinedTextField(
+                        modifier = Modifier// Add border to TextField
+                            .fillMaxWidth()
+                            .padding(start = 5.dp, end = 5.dp, top = 2.dp, bottom = 2.dp),
+                        value = registrationNo,
+                        onValueChange = { registrationNo = it },
+                        label = {
+                            Text(text = stringResource(id = R.string.your_regi))
+
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
+                        leadingIcon = {
+                            IconButton(onClick = { /*TODO*/ }) {
+                                Icon(painter = painterResource(id = R.drawable.baseline_class_24), contentDescription = null)
+                            }
+                        },
+                        shape = RoundedCornerShape(30),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            textColor = androidx.compose.ui.graphics.Color.Black,
+                            focusedBorderColor = androidx.compose.ui.graphics.Color(0xFF87CEEB),
+                            focusedLabelColor = androidx.compose.ui.graphics.Color.Gray,
+                            cursorColor = androidx.compose.ui.graphics.Color.Black,
+                            containerColor = androidx.compose.ui.graphics.Color.White
+
+                        )
                     )
                     email = CreateTextField(
                         stringResource(id = R.string.your_email),
