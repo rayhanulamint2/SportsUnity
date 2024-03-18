@@ -43,6 +43,7 @@ data class UserID(
     var documentId: String? = null,
     var name: String? = null,
     var university: String? = null,
+    var registrationNo: String? = null,
     var email: String? = null,
     var contact: String? = null,
     var password: String? = null,
@@ -52,6 +53,7 @@ data class UserID(
 )
 
 data class TournamentID(
+    var organizerEmail: String? = null,
     var tournamentId: String= "",
     var name: String? = null,
     var description: String? = null,
@@ -59,4 +61,48 @@ data class TournamentID(
     var volunteers: List<String>? = null,
     var startDate: String? = null,
     var endDate: String? = null
+)
+
+data class SportID(
+    var sportsId: String? = null,
+    var sportName: String? = null,
+    var playerList: List<String>? = null,
+    var winnerList: List<String>? = null,
+    var tournamentName: String? = null
+)
+
+data class winnerList1(
+    var winnerListId: String? = null,
+    var round: String? = null,
+    var sportName: String? = null,
+    var tournamentName: String? = null,
+    var winnerName : String? = null,
+    var losserName: String? = null,
+)
+
+data class teams(
+    var teamsId: String? = null,
+    var name: String? = null,
+    var playerList: List<String>? = null,
+    var tournamentName: String? = null,
+)
+
+data class PlayerId(
+    var playerIdId: String? = null,
+    var playerName: String? = null,
+    var teamName: String? = null,
+    var goal: String? = null,
+    var assist: String? = null,
+    var tournamentName: String? = null,
+    var round: String? = null
+)
+
+data class WinnerList2(
+    var WinnerListId: String? = null,
+    var winnerTeamName: String? = null,
+    var losserTeamName: String? = null,
+    var winnerTeamGoal: String? = null,
+    var losserTeamGoal: String? = null,
+    var round: String? = null,
+    var tournamentName: String? =null
 )

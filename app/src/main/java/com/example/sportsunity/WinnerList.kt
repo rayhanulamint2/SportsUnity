@@ -1,6 +1,7 @@
 package com.example.sportsunity
 
 import android.icu.text.LocaleDisplayNames
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,13 +54,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.sportsunity.data.DataSourceForWinnerList
-import com.example.sportsunity.model.WinnerList
-import com.example.sportsunity.ui.theme.BackButtonFromNewMatchCreation
+import com.example.sportsunity.SharedViewModel.SharedViewModel
+import com.example.sportsunity.model.winnerList1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WinnerList(navController: NavController,modifier: Modifier = Modifier){
+fun WinnerList(navController: NavController,viewModel: SharedViewModel,modifier: Modifier = Modifier){
     Scaffold(
         topBar = {
 //            TopBarWinnerList(navController)
@@ -67,7 +67,7 @@ fun WinnerList(navController: NavController,modifier: Modifier = Modifier){
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Winner List",
+                            text = "Winner List(${viewModel.sport})",
                             color = Color.White
                         )
                     },
@@ -102,59 +102,13 @@ fun WinnerList(navController: NavController,modifier: Modifier = Modifier){
             }
                  },
         content = {innerpadding->
-            myContentWinnerList(navController,innerpadding)
+            myContentWinnerList(navController, viewModel = viewModel,innerpadding)
         }
     )
 }
+
 @Composable
-fun TopBarWinnerList(navController: NavController){
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(Color.Black)
-                .fillMaxWidth()
-        ){
-            BackButtonFromWinnerList {
-                navController.navigate("SPORTSLISTFORORGANAIZER")
-            }
-            Text(
-                text = "WINNER LIST",
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(top = 4.dp, bottom = 5.dp)
-                    .absoluteOffset(x = (-15).dp, y = 1.dp)
-            )
-        }
-        Image(
-            painter = painterResource(id = R.drawable.blue_line),
-            contentDescription = "Blue Line",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .height(2.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-@Composable
-fun BackButtonFromWinnerList(onClick: () -> Unit) {
-    val image: Painter = painterResource(id = R.drawable.back_button)
-    Image(
-        painter = image,
-        contentDescription = "Back Button",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(40.dp)
-            .padding(top = 5.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-80).dp, y = 4.dp)
-//                    .align(Alignment.Start)
-            .clickable { onClick() }
-    )
-}
-@Composable
-fun myContentWinnerList(navController: NavController,innerpadding:PaddingValues){
+fun myContentWinnerList(navController: NavController,viewModel: SharedViewModel,innerpadding:PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -162,11 +116,18 @@ fun myContentWinnerList(navController: NavController,innerpadding:PaddingValues)
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-        ListForWinnerList(navController = navController, winnerlist = DataSourceForWinnerList().loadWinnerList())
+        Log.d("winnerList","${viewModel.allWinnerList}")
+        var winnerlist: List<winnerList1> = emptyList()
+        for(winnerList in viewModel.allWinnerList){
+            if(winnerList.tournamentName == viewModel.recentTournament.name  && winnerList.sportName == viewModel.sport){
+                winnerlist+=winnerList
+            }
+        }
+        ListForWinnerList(navController = navController, winnerlist = winnerlist)
     }
 }
 @Composable
-fun ListForWinnerList(navController: NavController, winnerlist: List<WinnerList>, modifier: Modifier = Modifier){
+fun ListForWinnerList(navController: NavController, winnerlist: List<winnerList1>, modifier: Modifier = Modifier){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -187,7 +148,7 @@ fun ListForWinnerList(navController: NavController, winnerlist: List<WinnerList>
     }
 }
 @Composable
-fun WinnerListCard(navController: NavController,winnerlist: WinnerList,modifier: Modifier = Modifier){
+fun WinnerListCard(navController: NavController,winnerlist: winnerList1,modifier: Modifier = Modifier){
     Card(
         modifier = Modifier.padding(top=5.dp, start = 30.dp,end = 30.dp, bottom = 5.dp),
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.maastricht_Blue))
@@ -203,21 +164,25 @@ fun WinnerListCard(navController: NavController,winnerlist: WinnerList,modifier:
                     fontSize = 13.sp,
                     color = Color.White
                 )
-                Text(
-                    text = stringResource(winnerlist.stringResourceId1),
-                    color = Color.White,
-                    fontSize = 17.sp,
-                )
+                winnerlist.winnerName?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp,
+                    )
+                }
                 Text(
                     text = "Losser:",
                     fontSize = 13.sp,
                     color = Color.White
                 )
-                Text(
-                    text = stringResource(winnerlist.stringResourceId3),
-                    color = Color.White,
-                    fontSize = 17.sp,
-                )
+                winnerlist.losserName?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp,
+                    )
+                }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -229,12 +194,14 @@ fun WinnerListCard(navController: NavController,winnerlist: WinnerList,modifier:
                     color = Color.White
 
                 )
-                Text(
-                    text = stringResource(id = winnerlist.stringResourceId2),
-                    color = Color.White,
-                    fontSize = 17.sp
-                    //                modifier = Modifier.fillMaxWidth(.2f)
-                )
+                winnerlist.round?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp
+                        //                modifier = Modifier.fillMaxWidth(.2f)
+                    )
+                }
             }
         }
     }

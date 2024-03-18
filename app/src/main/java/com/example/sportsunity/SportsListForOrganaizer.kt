@@ -58,13 +58,16 @@ fun SportsListForOrganaizer(navController: NavController,viewModel: SharedViewMo
                 TopAppBar(
                     title = {
                         Text(
-                            text = viewModel.getTopBar(),
+                            text = viewModel.topBar,
                             color = Color.White
                         )
                     },
                     navigationIcon = {
                         IconButton(onClick = {
-                            navController.navigate("HOME")
+                            if(viewModel.user=="user") {
+                                navController.navigate("HOME")
+                            }
+                            else navController.navigate("MYTOURNAMENTS")
                         }) {
                             //                                 Icon(
                             //                                     imageVector = Icons.Default.Menu,
@@ -99,55 +102,7 @@ fun SportsListForOrganaizer(navController: NavController,viewModel: SharedViewMo
     )
 
 }
-@Composable
-fun TopBarSportsList(navController: NavController){
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(Color.Black)
-                .fillMaxWidth()
-        ){
-            BackButtonFromSportsListForOrganaizer {
-                navController.navigate("HOME")
-            }
-            Text(
-                text = "SPORTS LIST",
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(top = 4.dp, bottom = 5.dp)
-                    .absoluteOffset(x = (-15).dp, y = 1.dp)
-            )
-        }
-        Image(
-            painter = painterResource(id = R.drawable.blue_line),
-            contentDescription = "Blue Line",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .height(2.dp)
-                .fillMaxWidth()
-        )
-    }
-}
 
-
-@Composable
-fun BackButtonFromSportsListForOrganaizer(onClick: () -> Unit) {
-    val image: Painter = painterResource(id = R.drawable.back_button)
-    Image(
-        painter = image,
-        contentDescription = "Back Button",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(40.dp)
-            .padding(top = 0.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-90).dp, y = 4.dp)
-//                    .align(Alignment.Start)
-            .clickable { onClick() }
-    )
-}
 
 @Composable
 fun myContentSportsListForOrganaizer(navController: NavController,viewModel: SharedViewModel,innerpadding:PaddingValues){
@@ -158,15 +113,8 @@ fun myContentSportsListForOrganaizer(navController: NavController,viewModel: Sha
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-        var doAgain by remember {
-            mutableStateOf(1)
-        }
-        LaunchedEffect(Unit) {
-            viewModel.findTournamentsDetails(viewModel.today, viewModel)
-            if(viewModel.runningTournaments.size!=0)doAgain = 3
-            else doAgain = 2
-        }
-//        SportsList(navController = navController,viewModel = viewModel, sportlist = )
+
+        viewModel.recentTournament.sports?.let { SportsList(navController = navController,viewModel = viewModel, sportlist = it) }
     }
 }
 
@@ -192,19 +140,42 @@ fun SportsList(
                 SportListCard(
                     navController = navController,
                     sportlist = mysport,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(8.dp),
+                    viewModel = viewModel
                 )
             }
         }
     }
 }
 @Composable
-fun SportListCard(navController: NavController, sportlist: String, modifier:Modifier = Modifier){
+fun SportListCard(navController: NavController, viewModel: SharedViewModel, sportlist: String, modifier:Modifier = Modifier){
     Card(
         modifier = modifier
             .fillMaxWidth(.5f)
             .clickable {
-                navController.navigate("NEWMATCHCREATION")
+                viewModel.sport = sportlist
+                viewModel.topBar = sportlist
+                Log.d("tanvir",viewModel.topBar)
+                for(sports in viewModel.allSports){
+                    if(sports.sportName==viewModel.sport&&sports.tournamentName==viewModel.recentTournament.name){
+                        viewModel.recentSport = sports
+                        break
+                    }
+                }
+                if(viewModel.user=="organaizer"){
+                    navController.navigate("CREATETOURNAMENTCHESS")
+                }
+                else if(viewModel.user=="user"){
+                    if(sportlist=="FOOTBALL"){
+                        navController.navigate("TEAMWISEWINNER")
+                    }
+                    else{
+                        navController.navigate("WINNERLIST")
+                    }
+                }
+                else{
+                    navController.navigate("NEWMATCHCREATION")
+                }
             },
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.maastricht_Blue))
 

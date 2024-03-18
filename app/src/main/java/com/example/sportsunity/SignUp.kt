@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -112,6 +113,9 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                     var password by rememberSaveable {
                         mutableStateOf("")
                     }
+                    var registrationNo by rememberSaveable {
+                        mutableStateOf("")
+                    }
                     name = CreateTextField(
                         stringResource(id = R.string.your_name), KeyboardType.Text, ImeAction.Next,
                         Icons.Filled.Person
@@ -121,6 +125,12 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                         KeyboardType.Text,
                         ImeAction.Next,
                         Icons.Filled.Home
+                    )
+                    registrationNo = CreateTextField(
+                        label = stringResource(id = R.string.your_regi),
+                        keyboardType = KeyboardType.Number,
+                        imeaction = ImeAction.Next,
+                        icon = Icons.Filled.Star
                     )
                     email = CreateTextField(
                         stringResource(id = R.string.your_email),
@@ -151,6 +161,7 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                             viewModel.userUpdate(
                                 name = name,
                                 university = university,
+                                registrationNo = registrationNo,
                                 contact = mobile,
                                 email = email,
                                 password = password
@@ -163,7 +174,7 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                     ) {
                         Text(text = "Sign Up")
                     }
-                    Spacer(modifier = Modifier.height(40.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                     Text(
                         text = "Already have an account?",
                         textAlign = TextAlign.Center,
@@ -197,7 +208,7 @@ fun CreateTextField(
     OutlinedTextField(
         modifier = Modifier// Add border to TextField
             .fillMaxWidth()
-            .padding(5.dp),
+            .padding(start = 5.dp, end = 5.dp, top = 2.dp, bottom = 2.dp),
         value = text,
         onValueChange = { text = it },
         label = {

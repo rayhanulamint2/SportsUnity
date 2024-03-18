@@ -20,8 +20,8 @@ fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,us
     val text = "tanvir"
     val sportName = "Chess"
     val footballTeam = ""
-    val topBar = viewModel.getTopBar()
-    NavHost(navController = navController, startDestination = "HOME"){
+    val topBar = viewModel.topBar
+    NavHost(navController = navController, startDestination = "LOGIN"){
 
         composable(route = "LOGIN"){
             Login(mainActivityCallback = mainActivityCallback,viewModel = viewModel,navController,modifier)
@@ -30,11 +30,11 @@ fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,us
             SignUp(mainActivityCallback = mainActivityCallback,viewModel = viewModel,navController,modifier)
         }
         composable(route = "HOME"){
-            viewModel.setTopBar("SPORTSUNITY")
+            viewModel.topBar="SPORTSUNITY"
             Home(navController,viewModel,modifier)
         }
         composable(route = "CREATETOURNAMENT"){
-            viewModel.setTopBar("Create Tournament")
+            viewModel.topBar = "Create Tournament"
             CreateTournament(navController,viewModel,modifier)
         }
         composable(route = "CREATETOURNAMENTCHESS"){
@@ -45,8 +45,8 @@ fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,us
             AfterSignUp(navController = navController, modifier = modifier)
         }
         composable(route = "MYPROFILE"){
-            viewModel.setTopBar("My Profile")
-            MyProfile(navController = navController, modifier = modifier)
+            viewModel.topBar="My Profile"
+            MyProfile(navController = navController, viewModel = viewModel, modifier = modifier)
         }
 
 
@@ -62,39 +62,39 @@ fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,us
         }
 
         composable(route = "MYTOURNAMENTS"){
-            viewModel.setTopBar("My Tournaments")
-            MyTournaments(navController = navController,modifier)
+            viewModel.topBar=("My Tournaments")
+            MyTournaments(navController = navController, viewModel = viewModel,modifier)
         }
         composable(route = "SPORTSLISTFORORGANAIZER"){
-            viewModel.setTopBar("Sports List")
-            SportsListForOrganaizer(navController = navController,viewModel,modifier = modifier)
+            viewModel.topBar=("Sports List")
+            SportsListForOrganaizer(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "NEWMATCHCREATION"){
-            viewModel.setTopBar(sportName)
-            NewMatchCreation(text,navController = navController,modifier = modifier)
+            viewModel.topBar = (sportName)
+            NewMatchCreation(text,navController = navController, viewModel = viewModel,modifier = modifier)
         }
         composable(route = "WINNERLIST"){
-            viewModel.setTopBar("Winner List")
-            WinnerList(navController = navController,modifier = modifier)
+            viewModel.topBar = ("Winner List")
+            WinnerList(navController = navController, viewModel = viewModel,modifier = modifier)
         }
         composable(route = "WINNERSELECTION"){
-            viewModel.setTopBar(sportName)
-            WinnerSelection(navController = navController,modifier = modifier)
+            viewModel.topBar = (sportName)
+            WinnerSelection(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "FOOTBALL"){
-            viewModel.setTopBar("Football")
+            viewModel.topBar = ("Football")
             FootBall(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "TEAMWISEWINNER"){
-            viewModel.setTopBar("Football")
+            viewModel.topBar = ("Football")
             TeamWiseWinner(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "INDIVIDUALTEAM"){
-            viewModel.setTopBar(footballTeam)
+            viewModel.topBar = (footballTeam)
             IndividualTeam(navController = navController,viewModel = viewModel,modifier = modifier)
         }
         composable(route = "FOOTBALLUPDATE"){
-            viewModel.setTopBar("Football")
+            viewModel.topBar = ("Football")
             FootBallUpdate(navController = navController,viewModel = viewModel,modifier = modifier)
         }
 

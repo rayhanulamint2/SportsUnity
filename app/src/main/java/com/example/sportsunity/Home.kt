@@ -1,12 +1,9 @@
 package com.example.sportsunity
 
-import android.content.ContentValues
-import android.media.Image
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,26 +18,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -52,33 +40,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Image
-import androidx.compose.ui.semantics.SemanticsProperties.Text
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.example.sportsunity.SharedViewModel.SharedViewModel
 import com.example.sportsunity.model.TournamentID
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -87,6 +63,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modifier = Modifier) {
     val paddingValues = 10.dp
+    viewModel.user = "user"
+
 
 //    android:theme="@style/Theme.SportsUnity"
     val drawerstate  = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -124,11 +102,13 @@ fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modif
                             .width(100.dp)
                             .height(100.dp)
                     )
-                    Text(
-                        text = "Khalid Bin Selim",
-                        color = Color.Black,
-                        fontSize = 20.sp
-                    )
+                    viewModel.userDetails.name?.let {
+                        Text(
+                            text = it,
+                            color = Color.Black,
+                            fontSize = 20.sp
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(50.dp))
                 Divider()
@@ -187,7 +167,7 @@ fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modif
                     TopAppBar(
                         title = {
                             Text(
-                                text = viewModel.getTopBar(),
+                                text = viewModel.topBar,
                                 color = Color.White
                             )
                         },
@@ -233,6 +213,7 @@ fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modif
                 if (abhishek==2) {
                     myContent(navController, innerpadding)
                 } else if(abhishek == 3){
+                    Log.d("allteam","${viewModel.allWinnerList2}")
                     myContentRunningTournament(
                         navController = navController,
                         viewModel = viewModel,
@@ -243,6 +224,12 @@ fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modif
                     loading()
                     LaunchedEffect(Unit) {
                         viewModel.findTournamentsDetails(viewModel.today, viewModel)
+                        viewModel.findAllSports()
+                        viewModel.findAllUsers()
+                        viewModel.findAllWinnerList1()
+                        viewModel.findAllTeams()
+                        viewModel.findAllPlayerId()
+                        viewModel.findAllWinnerList2()
                         if(viewModel.runningTournaments.size!=0)abhishek = 3
                         else abhishek = 2
                     }
@@ -399,7 +386,7 @@ fun RunningTournamentList(navController: NavController,viewModel: SharedViewMode
 fun RunningTournamentCard(navController: NavController,runningtournament: TournamentID,viewModel: SharedViewModel,modifier:Modifier = Modifier){
     Card(
         modifier = modifier.clickable {
-            viewModel.tournamentId = runningtournament.tournamentId
+            viewModel.recentTournament = runningtournament
             navController.navigate("SPORTSLISTFORORGANAIZER")
         },
         colors = CardDefaults.cardColors(containerColor = Color.Black)
@@ -408,37 +395,56 @@ fun RunningTournamentCard(navController: NavController,runningtournament: Tourna
 
 
 //        Box(modifier = modifier.fillMaxSize()){
-            Image(
-                painter = painterResource(id = R.drawable.image_6),
-                contentDescription = runningtournament.name,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(194.dp),
-                contentScale = ContentScale.Crop
-            )
-        Log.d("running3","$runningtournament")
-        runningtournament.name?.let {
-            Text(
-                text = it,
-    //                LocalContext.current.getString(runningtournament.stringResourceId),
-                color = Color.White,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(top = 10.dp, start = 16.dp),
-                //                style = MaterialTheme.typography.headlineSmall
-            )
+        Image(
+            painter = painterResource(id = R.drawable.image_6),
+            contentDescription = "bannar",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(194.dp),
+            contentScale = ContentScale.Crop
+        )
+        Row(modifier = Modifier.padding(top = 10.dp, start = 16.dp),){
+            runningtournament.name?.let {
+                Text(
+                    text = it,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    modifier = Modifier.weight(.8f)
+                    //                style = MaterialTheme.typography.headlineSmall
+                )
+            }
+            Column(
+                modifier = Modifier.weight(.2f)
+            ) {
+                Text(
+                    text = "End Date",
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    modifier = Modifier
+                )
+
+                runningtournament.endDate?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 12.sp,
+                        modifier = Modifier
+                    )
+                }
+            }
         }
 
 //        }
-            Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         runningtournament.description?.let {
             Text(
                 text = it,
-    //                LocalContext.current.getString(runningtournament.stringResourceId2),
                 color = Color.White,
                 fontSize = 10.sp,
                 modifier = Modifier.padding(start = 16.dp)
             )
         }
+        Spacer(modifier = Modifier.height(10.dp))
         }
 
 }

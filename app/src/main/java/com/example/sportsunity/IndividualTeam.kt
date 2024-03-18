@@ -33,7 +33,9 @@ import androidx.navigation.NavController
 import com.example.sportsunity.SharedViewModel.SharedViewModel
 import com.example.sportsunity.data.DataSourceIndividualTeam
 import com.example.sportsunity.model.IndividualTeam
+import com.example.sportsunity.model.PlayerId
 import com.example.sportsunity.model.WinnerList
+import com.example.sportsunity.model.WinnerList2
 import androidx.compose.ui.res.colorResource as colorResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,11 +60,23 @@ fun myContentIndividualTeam(navController: NavController,viewModel: SharedViewMo
             modifier = Modifier.fillMaxSize()
         )
     }
-    ListForIndividualTeam(navController = navController, individualteam = DataSourceIndividualTeam().loadIndividualTeam())
+    var individualteam1: List<PlayerId> = emptyList()
+    for(player in viewModel.allPlayerId){
+        if(player.round==viewModel.round&&player.tournamentName==viewModel.recentTournament.name&&player.teamName==viewModel.recentWinnerList2.winnerTeamName){
+            individualteam1+=player
+        }
+    }
+    var individualteam2: List<PlayerId> = emptyList()
+    for(player in viewModel.allPlayerId){
+        if(player.round==viewModel.round&&player.tournamentName==viewModel.recentTournament.name&&player.teamName==viewModel.recentWinnerList2.losserTeamName){
+            individualteam2+=player
+        }
+    }
+    ListForIndividualTeam(navController = navController,viewModel = viewModel, individualteam1 = individualteam1,individualteam2 = individualteam2)
 }
 
 @Composable
-fun ListForIndividualTeam(navController: NavController, individualteam: List<IndividualTeam>, modifier: Modifier = Modifier) {
+fun ListForIndividualTeam(navController: NavController, viewModel: SharedViewModel,individualteam1: List<PlayerId>,individualteam2: List<PlayerId>, modifier: Modifier = Modifier) {
     Column {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,14 +92,16 @@ fun ListForIndividualTeam(navController: NavController, individualteam: List<Ind
                 Row(
                     modifier = Modifier.padding(20.dp)
                 ) {
-                    Text(
-                        text = "Team 1",
-                        color = Color.White
-                    )
+                    viewModel.recentWinnerList2.winnerTeamName?.let {
+                        Text(
+                            text = it,
+                            color = Color.White
+                        )
+                    }
                 }
             }
             LazyColumn(modifier = modifier.padding(top = 20.dp)) {
-                items(individualteam) { individualteam ->
+                items(individualteam1) { individualteam ->
                     IndividualTeamCard(
                         navController = navController,
                         individualteam = individualteam,
@@ -108,14 +124,16 @@ fun ListForIndividualTeam(navController: NavController, individualteam: List<Ind
                 Row(
                     modifier = Modifier.padding(20.dp)
                 ) {
-                    Text(
-                        text = "Team 2",
-                        color = Color.White
-                    )
+                    viewModel.recentWinnerList2.losserTeamName?.let {
+                        Text(
+                            text = it,
+                            color = Color.White
+                        )
+                    }
                 }
             }
             LazyColumn(modifier = modifier.padding(top = 20.dp)) {
-                items(individualteam) { individualteam ->
+                items(individualteam2) { individualteam ->
                     IndividualTeamCard(
                         navController = navController,
                         individualteam = individualteam,
@@ -131,7 +149,7 @@ fun ListForIndividualTeam(navController: NavController, individualteam: List<Ind
 
 
 @Composable
-fun IndividualTeamCard(navController: NavController, individualteam: IndividualTeam, modifier: Modifier = Modifier){
+fun IndividualTeamCard(navController: NavController, individualteam: PlayerId, modifier: Modifier = Modifier){
     Card(
         modifier = Modifier.padding(top=5.dp, start = 30.dp,end = 30.dp, bottom = 5.dp),
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.maastricht_Blue))
@@ -147,11 +165,13 @@ fun IndividualTeamCard(navController: NavController, individualteam: IndividualT
                     fontSize = 13.sp,
                     color = Color.White
                 )
-                Text(
-                    text = stringResource(individualteam.stringResourceId1),
-                    color = Color.White,
-                    fontSize = 17.sp,
-                )
+                individualteam.playerName?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp,
+                    )
+                }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -163,12 +183,14 @@ fun IndividualTeamCard(navController: NavController, individualteam: IndividualT
                     color = Color.White
 
                 )
-                Text(
-                    text = individualteam.goal_team1.toString(),
-                    color = Color.White,
-                    fontSize = 17.sp
-                    //                modifier = Modifier.fillMaxWidth(.2f)
-                )
+                individualteam.goal?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp
+                        //                modifier = Modifier.fillMaxWidth(.2f)
+                    )
+                }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -180,12 +202,14 @@ fun IndividualTeamCard(navController: NavController, individualteam: IndividualT
                     color = Color.White
 
                 )
-                Text(
-                    text = individualteam.goal_team2.toString(),
-                    color = Color.White,
-                    fontSize = 17.sp
-                    //                modifier = Modifier.fillMaxWidth(.2f)
-                )
+                individualteam.assist?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp
+                        //                modifier = Modifier.fillMaxWidth(.2f)
+                    )
+                }
             }
         }
     }

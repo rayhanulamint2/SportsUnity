@@ -1,6 +1,8 @@
 package com.example.sportsunity
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,11 +29,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.example.sportsunity.SharedViewModel.SharedViewModel
 import com.example.sportsunity.data.DataSourceTeamWiseWinner
 import com.example.sportsunity.model.TeamWiseWinner
 import com.example.sportsunity.model.WinnerList
+import com.example.sportsunity.model.WinnerList2
 import kotlin.io.path.createTempDirectory
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,14 +61,21 @@ fun myContentTeamWiseWinner(navController: NavController,viewModel: SharedViewMo
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
+        var teamwisewinner:List<WinnerList2> = emptyList()
+        for(winnnerList in viewModel.allWinnerList2){
+            if(winnnerList.tournamentName==viewModel.recentTournament.name){
+                teamwisewinner+=winnnerList
+            }
+        }
+        Log.d("teamwisewinner","$teamwisewinner")
 
-        ListForTeamWiseWinner(navController = navController, teamwisewinner = DataSourceTeamWiseWinner().loadTeamWiseWinner())
+        ListForTeamWiseWinner(navController = navController, viewModel = viewModel, teamwisewinner = teamwisewinner)
     }
 
 }
 
 @Composable
-fun ListForTeamWiseWinner(navController: NavController, teamwisewinner: List<TeamWiseWinner>, modifier: Modifier = Modifier){
+fun ListForTeamWiseWinner(navController: NavController,viewModel: SharedViewModel, teamwisewinner: List<WinnerList2>, modifier: Modifier = Modifier){
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,16 +88,24 @@ fun ListForTeamWiseWinner(navController: NavController, teamwisewinner: List<Tea
 //        WinnerListCard(navController = navController, winnerlist = win)
         LazyColumn(modifier = modifier.padding(top = 20.dp)) {
             items(teamwisewinner) { teamwisewinner ->
-                TeamWiseWinnerCard(navController = navController, teamwisewinner = teamwisewinner)
+                TeamWiseWinnerCard(navController = navController,viewModel = viewModel, teamwisewinner = teamwisewinner)
             }
         }
     }
 }
 @Composable
-fun TeamWiseWinnerCard(navController: NavController, teamwisewinner: TeamWiseWinner, modifier: Modifier = Modifier){
+fun TeamWiseWinnerCard(navController: NavController,viewModel: SharedViewModel, teamwisewinner: WinnerList2, modifier: Modifier = Modifier){
     Card(
-        modifier = Modifier.padding(top=5.dp, start = 30.dp,end = 30.dp, bottom = 5.dp),
+        modifier = Modifier.padding(top=5.dp, start = 30.dp,end = 30.dp, bottom = 5.dp)
+            .clickable {
+                viewModel.team1 = teamwisewinner.winnerTeamName.toString()
+                viewModel.team2 = teamwisewinner.losserTeamName.toString()
+                viewModel.round = teamwisewinner.round.toString()
+                viewModel.recentWinnerList2 = teamwisewinner
+                navController.navigate("INDIVIDUALTEAM")
+            },
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.maastricht_Blue))
+
     ) {
         Row(
             modifier = Modifier.padding(20.dp)
@@ -99,21 +118,25 @@ fun TeamWiseWinnerCard(navController: NavController, teamwisewinner: TeamWiseWin
                     fontSize = 13.sp,
                     color = Color.White
                 )
-                Text(
-                    text = stringResource(teamwisewinner.stringResourceId1),
-                    color = Color.White,
-                    fontSize = 17.sp,
-                )
+                teamwisewinner.winnerTeamName?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp,
+                    )
+                }
                 Text(
                     text = "Losser Team:",
                     fontSize = 13.sp,
                     color = Color.White
                 )
-                Text(
-                    text = stringResource(teamwisewinner.stringResourceId2),
-                    color = Color.White,
-                    fontSize = 17.sp,
-                )
+                teamwisewinner.losserTeamName?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp,
+                    )
+                }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -126,7 +149,7 @@ fun TeamWiseWinnerCard(navController: NavController, teamwisewinner: TeamWiseWin
 
                 )
                 Text(
-                    text = stringResource(id = teamwisewinner.goal_team1)+"-"+stringResource(id = teamwisewinner.goal_team2),
+                    text = teamwisewinner.winnerTeamGoal+"-"+teamwisewinner.losserTeamGoal,
                     color = Color.White,
                     fontSize = 17.sp
                     //                modifier = Modifier.fillMaxWidth(.2f)
@@ -142,12 +165,14 @@ fun TeamWiseWinnerCard(navController: NavController, teamwisewinner: TeamWiseWin
                     color = Color.White
 
                 )
-                Text(
-                    text = stringResource(id = teamwisewinner.stringResourceId3),
-                    color = Color.White,
-                    fontSize = 17.sp
-                    //                modifier = Modifier.fillMaxWidth(.2f)
-                )
+                teamwisewinner.round?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 17.sp
+                        //                modifier = Modifier.fillMaxWidth(.2f)
+                    )
+                }
             }
         }
     }

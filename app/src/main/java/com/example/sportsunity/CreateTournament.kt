@@ -70,7 +70,7 @@ fun CreateTournament(navController: NavController,viewModel: SharedViewModel, mo
                 TopAppBar(
                     title = {
                         Text(
-                            text = viewModel.getTopBar(),
+                            text = viewModel.topBar,
                             color = Color.White
                         )
                     },
@@ -491,8 +491,8 @@ fun myContentCreateTournament(navController: NavController,viewModel: SharedView
                     startDate = formattedStartDate,
                     endDate = formattedEndDate
                 )
-                navController.navigate("MYTOURNAMENTS"
-                )
+                viewModel.sportsUpdate(sports = sports, tournamentName = name)
+                navController.navigate("MYTOURNAMENTS")
             }) {
                 Text(
                     text = "CREATE"

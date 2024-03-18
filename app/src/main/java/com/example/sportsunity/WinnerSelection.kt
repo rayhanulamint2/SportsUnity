@@ -45,10 +45,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WinnerSelection(navController: NavController,modifier:Modifier = Modifier){
+fun WinnerSelection(navController: NavController,viewModel: SharedViewModel,modifier:Modifier = Modifier){
     Scaffold(
         topBar = {
 //            TopBarWinnerSelection(navController = navController)
@@ -56,7 +57,7 @@ fun WinnerSelection(navController: NavController,modifier:Modifier = Modifier){
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Chess",
+                            text = viewModel.sport,
                             color = Color.White
                         )
                     },
@@ -92,7 +93,7 @@ fun WinnerSelection(navController: NavController,modifier:Modifier = Modifier){
         },
         content = {innerpadding->
 //            myContent(navController,innerpadding)
-            myContentWinnerSelection(navController = navController, innerpadding = innerpadding )
+            myContentWinnerSelection(navController = navController,viewModel = viewModel, innerpadding = innerpadding )
         }
     )
 }
@@ -148,7 +149,7 @@ fun WinnerSelection(navController: NavController,modifier:Modifier = Modifier){
 //}
 
 @Composable
-fun myContentWinnerSelection(navController: NavController,innerpadding: PaddingValues){
+fun myContentWinnerSelection(navController: NavController,viewModel: SharedViewModel,innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -215,8 +216,12 @@ fun myContentWinnerSelection(navController: NavController,innerpadding: PaddingV
                         )
                     }
                     Spacer(modifier = Modifier.width(20.dp))
+                    val text = if(viewModel.sport=="FOOTBALL"){
+                        viewModel.team1
+                    }
+                    else viewModel.player1
                     Text(
-                        text = "Player 1",
+                        text = text,
                         color = Color.White
                     )
                 }
@@ -251,13 +256,25 @@ fun myContentWinnerSelection(navController: NavController,innerpadding: PaddingV
                         )
                     }
                     Spacer(modifier = Modifier.width(20.dp))
+                    val text = if(viewModel.sport=="FOOTBALL"){
+                        viewModel.team2
+                    }
+                    else viewModel.player2
                     Text(
-                        text = "Player 2",
+                        text = text,
                         color = Color.White
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = { navController.navigate("NEWMATCHCREATION") }) {
+                Button(onClick = {
+                    if(selectedPlayer=="Player1"){
+                        viewModel.recentTournament.name?.let { viewModel.winnerListUpdate(tournamentName = it, winnerName = viewModel.player1, losserName = viewModel.player2, round = viewModel.round, sportName = viewModel.sport) }
+                    }
+                    else{
+                        viewModel.recentTournament.name?.let { viewModel.winnerListUpdate(tournamentName = it, winnerName = viewModel.player2, losserName = viewModel.player1, round = viewModel.round, sportName = viewModel.sport) }
+                    }
+                    navController.navigate("NEWMATCHCREATION")
+                }) {
                     Text(text = "Confirm")
                 }
             }

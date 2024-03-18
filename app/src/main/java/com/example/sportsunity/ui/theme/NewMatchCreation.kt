@@ -1,8 +1,8 @@
 package com.example.sportsunity.ui.theme
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,18 +46,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sportsunity.R
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewMatchCreation(text: String, navController: NavController, modifier: Modifier = Modifier){
+fun NewMatchCreation(text: String, navController: NavController,viewModel: SharedViewModel, modifier: Modifier = Modifier){
     Scaffold(
         topBar = {
 //            TopBarNewMatchCreation(navController)
             Column {
+                Log.d("tanvir2",viewModel.topBar)
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Chess",
+                            text = viewModel.sport ,
                             color = Color.White
                         )
                     },
@@ -65,11 +67,6 @@ fun NewMatchCreation(text: String, navController: NavController, modifier: Modif
                         IconButton(onClick = {
                             navController.navigate("SPORTSLISTFORORGANAIZER")
                         }) {
-                            //                                 Icon(
-                            //                                     imageVector = Icons.Default.Menu,
-                            //                                     contentDescription = null,
-                            //                                     tint = Color.White
-                            //                                 )
                             Image(
                                 painter = painterResource(id = R.drawable.back_button),
                                 contentDescription = null,
@@ -92,61 +89,20 @@ fun NewMatchCreation(text: String, navController: NavController, modifier: Modif
             }
                  },
         content = {innerpadding->
-            myContentNewMatchCreation(navController,innerpadding)
+            myContentNewMatchCreation(navController,viewModel = viewModel,
+                innerpadding = innerpadding
+            )
         }
     )
 }
 
-@Composable
-fun TopBarNewMatchCreation(navController: NavController){
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(Color.Black)
-                .fillMaxWidth()
-        ){
-            BackButtonFromNewMatchCreation {
-                navController.navigate("SPORTSLISTFORORGANAIZER")
-            }
-            Text(
-                text = "CHESS",
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(top = 4.dp, bottom = 5.dp)
-                    .absoluteOffset(x = (-15).dp, y = 1.dp)
-            )
-        }
-        Image(
-            painter = painterResource(id = R.drawable.blue_line),
-            contentDescription = "Blue Line",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .height(2.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-@Composable
-fun BackButtonFromNewMatchCreation(onClick: () -> Unit) {
-    val image: Painter = painterResource(id = R.drawable.back_button)
-    Image(
-        painter = image,
-        contentDescription = "Back Button",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(40.dp)
-            .padding(top = 0.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-120).dp, y = 4.dp)
-//                    .align(Alignment.Start)
-            .clickable { onClick() }
-    )
-}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun myContentNewMatchCreation(navController: NavController,innerpadding: PaddingValues){
+fun myContentNewMatchCreation(
+    navController: NavController,
+    innerpadding: PaddingValues,
+    viewModel: SharedViewModel
+){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -190,8 +146,16 @@ fun myContentNewMatchCreation(navController: NavController,innerpadding: Padding
                         style = MaterialTheme.typography.headlineSmall
                         )
                     Spacer(modifier = Modifier.height(30.dp))
+                    val text1 = if(viewModel.sport=="FOOTBALL"){
+                        "Team 1"
+                    }
+                    else "Player 1"
+                    val text2 = if(viewModel.sport=="FOOTBALL"){
+                        "Team 2"
+                    }
+                    else "Player 2"
                     Text(
-                        text = "Player 1",
+                        text = text1,
                         color = Color.White,
                     )
                     OutlinedTextField(
@@ -199,7 +163,7 @@ fun myContentNewMatchCreation(navController: NavController,innerpadding: Padding
                         onValueChange = {player1 = it},
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp,top = 10.dp, bottom = 10.dp),
+                            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
                         shape = RoundedCornerShape(30),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             textColor = Color.White,
@@ -211,7 +175,7 @@ fun myContentNewMatchCreation(navController: NavController,innerpadding: Padding
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Player 2",
+                        text = text2,
                         color = Color.White,
                     )
                     OutlinedTextField(
@@ -219,7 +183,7 @@ fun myContentNewMatchCreation(navController: NavController,innerpadding: Padding
                         onValueChange = {player2 = it},
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp,top = 10.dp, bottom = 10.dp),
+                            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
                         shape = RoundedCornerShape(30),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             textColor = Color.White,
@@ -238,7 +202,7 @@ fun myContentNewMatchCreation(navController: NavController,innerpadding: Padding
                         onValueChange = {round = it},
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp,top = 10.dp, bottom = 10.dp),
+                            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
                         shape = RoundedCornerShape(30),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             textColor = Color.White,
@@ -249,7 +213,20 @@ fun myContentNewMatchCreation(navController: NavController,innerpadding: Padding
                     )
 
                     Spacer(modifier = Modifier.height(35.dp))
-                    Button(onClick = { navController.navigate("WINNERSELECTION") }) {
+                    Button(onClick = {
+                        if(viewModel.sport=="FOOTBALL"){
+                            viewModel.team1 = player1
+                            viewModel.team2 = player2
+                            viewModel.round = round
+                            navController.navigate("FOOTBALLUPDATE")
+                        }
+                        else {
+                            viewModel.player1 = player1
+                            viewModel.player2 = player2
+                            viewModel.round = round
+                            navController.navigate("WINNERSELECTION")
+                        }
+                    }) {
                         Text(
                             text = "NEXT"
                         )

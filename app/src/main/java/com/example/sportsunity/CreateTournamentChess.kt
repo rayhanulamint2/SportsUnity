@@ -1,5 +1,6 @@
 package com.example.sportsunity
 
+import android.util.Log
 import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
@@ -31,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,17 +58,31 @@ fun CreateTournamentChess(navController: NavController,viewModel: SharedViewMode
     Scaffold(
         topBar = {
 //            TopBarCreateTournament(navController)
-                 TopBarDesignWithBack(navController = navController, navigation = "SPORTSLISTFORORGANAIZER", header = "Chess")
+                 TopBarDesignWithBack(navController = navController, navigation = "SPORTSLISTFORORGANAIZER", header = "${viewModel.sport}")
                  },
         content = {innerpadding->
-            myContentCreateTournamentChess(navController,innerpadding)
+            var tanvir by remember{
+                mutableStateOf(1)
+            }
+            if(tanvir==2) {
+                myContentCreateTournamentChess(navController, viewModel = viewModel, innerpadding)
+            }
+            else{
+                loading()
+                LaunchedEffect(Unit){
+                    viewModel.findAllTeams()
+                    Log.d("allTeams", "$viewModel.allTeams")
+                    tanvir =2
+                }
+            }
         }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun myContentCreateTournamentChess(navController: NavController, innerpadding: PaddingValues){
+fun myContentCreateTournamentChess(navController: NavController,viewModel: SharedViewModel, innerpadding: PaddingValues){
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -78,6 +94,18 @@ fun myContentCreateTournamentChess(navController: NavController, innerpadding: P
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            var playerList= listOf("Khalid Bin Selim", "Abhishek Das", "Rayhanul Amin Tanvir", "Gazi Mujtaba")
+            var tanvir by rememberSaveable {
+                mutableStateOf(1)
+            }
+            for(sports in viewModel.allSports){
+                if(sports.sportName==viewModel.sport&&sports.tournamentName==viewModel.recentTournament.name){
+                    playerList = sports.playerList!!
+                    viewModel.recentSport = sports
+                    Log.d("tasnuva","${viewModel.recentSport}")
+                    break
+                }
+            }
             var text by rememberSaveable {
                 mutableStateOf("")
             }
@@ -98,7 +126,11 @@ fun myContentCreateTournamentChess(navController: NavController, innerpadding: P
                 value = text,
                 onValueChange = { text = it },
                 label = {
-                    Text(text = "Add Player")
+                    val ttt = if(viewModel.sport=="FOOTBALL"){
+                        "Add Team"
+                    }
+                    else "Add Player"
+                    Text(text = ttt)
 
                 },
                 keyboardOptions = KeyboardOptions(
@@ -119,7 +151,24 @@ fun myContentCreateTournamentChess(navController: NavController, innerpadding: P
                         modifier = Modifier.padding(end = 16.dp)
                     ) {
                         IconButton(
-                            onClick = { text = "" }
+                            onClick = {
+                                if(viewModel.sport=="FOOTBALL"){
+                                    viewModel.teamName = text
+                                    navController.navigate("FOOTBALL")
+                                }
+                                else{
+                                    playerList+=text
+                                    Log.d("playerList","$playerList")
+                                    viewModel.updatePlayerList(playerList)
+                                    for(sports in viewModel.allSports){
+                                        if(sports.sportName==viewModel.sport&&sports.tournamentName==viewModel.recentTournament.name){
+                                            sports.playerList = playerList
+                                        }
+                                    }
+                                    text = ""
+                                    tanvir = 1-tanvir
+                                }
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -143,8 +192,15 @@ fun myContentCreateTournamentChess(navController: NavController, innerpadding: P
                             .fillMaxWidth()
                             .padding(20.dp)
                     )
+                    val t = if(viewModel.sport=="FOOTBALL") {
+                        "Team List"
+                    }
+                    else {
+                        "Player List"
+                    }
                     Text(
-                        text = "Player List",
+                        text = t
+                        ,
                         color = Color.White,
                         fontSize = 20.sp,
                         modifier = Modifier
@@ -153,17 +209,40 @@ fun myContentCreateTournamentChess(navController: NavController, innerpadding: P
                         textAlign = TextAlign.Center
                     )
                 }
-                val playerList= listOf("Khalid Bin Selim", "Abhishek Das", "Rayhanul Amin Tanvir", "Gazi Mujtaba")
+                var playerListForFootball:List<String?> = emptyList()
+                for(team in viewModel.allTeams){
+                    if(team.tournamentName==viewModel.recentTournament.name){
+                        playerListForFootball+=team.name
+                    }
+                }
+
+
                 LazyColumn(modifier = Modifier.padding(bottom = 20.dp)) {
-                    items(playerList) { player ->
-                        Text(
-                            text = player,
-                            color = Color.White,
-                            modifier = Modifier
-                                .padding(5.dp)
-                                .fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
+                    if(viewModel.sport=="FOOTBALL"){
+                        items(playerListForFootball) { player ->
+                            if (player != null) {
+                                Text(
+                                    text = player,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .padding(5.dp)
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    }
+                    else{
+                        items(playerList) { player ->
+                            Text(
+                                text = player,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }

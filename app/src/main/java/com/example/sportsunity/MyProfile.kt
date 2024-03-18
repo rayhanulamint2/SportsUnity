@@ -42,10 +42,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyProfile(navController:NavController, modifier: Modifier) {
+fun MyProfile(navController:NavController,viewModel: SharedViewModel, modifier: Modifier) {
     Scaffold(
         topBar = {
 //            TopBarMyProfile(navController)
@@ -88,7 +89,7 @@ fun MyProfile(navController:NavController, modifier: Modifier) {
             }
                  },
         content = {innerpadding->
-            myContentMyProfile(navController,innerpadding)
+            myContentMyProfile(navController, viewModel = viewModel,innerpadding)
         }
     )
 }
@@ -140,7 +141,7 @@ fun NavigationFromMyProfile(onClick: () -> Unit) {
 }
 
 @Composable
-fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues){
+fun myContentMyProfile(navController: NavController, viewModel: SharedViewModel,innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -182,15 +183,17 @@ fun myContentMyProfile(navController: NavController, innerpadding: PaddingValues
                     alignment = Alignment.TopCenter
                 )
 
-                Text(
-                    text = stringResource(R.string.profile_name),
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    style = TextStyle(fontSize = 20.sp)
-                )
+                viewModel.userDetails.name?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        style = TextStyle(fontSize = 20.sp)
+                    )
+                }
 
                 Button(
                     onClick = { navController.navigate("PERSONALINFO") },
