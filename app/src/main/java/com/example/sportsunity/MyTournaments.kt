@@ -119,6 +119,7 @@ fun myContentMyTournaments(navController: NavController, viewModel: SharedViewMo
             modifier = Modifier.fillMaxSize()
         )
         Log.d("mytournaments","${viewModel.myTournaments}")
+        Log.d("userId2","${viewModel.userDetails}")
         viewModel.findMyVoulunteerTounaments()
         Log.d("myvolunteer1","$viewModel.myVolunteerTournaments")
         MyTournamentList(navController = navController,viewModel = viewModel, mytournamentList = viewModel.myTournaments,myVolunteerTournamentList = viewModel.myVolunteerTournaments )

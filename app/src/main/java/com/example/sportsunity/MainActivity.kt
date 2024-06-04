@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity(),MainActivityCallback {
                         Toast.LENGTH_SHORT,
                     ).show()
                     hello = true
-                    navController.navigate("HOME")
+                    navController.navigate("OTP")
                 } else {
                     // Login failed
                     Log.w("Login", "signInWithEmail:failure", task.exception)

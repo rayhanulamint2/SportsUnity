@@ -49,7 +49,8 @@ data class UserID(
     var password: String? = null,
     var asParticipant: List<String>? = null,
     var asOrganaizer: List<String>? = null,
-    var asVolunteer: List<String>? = null
+    var asVolunteer: List<String>? = null,
+    var isSubscribed: Boolean? = null
 )
 
 data class TournamentID(

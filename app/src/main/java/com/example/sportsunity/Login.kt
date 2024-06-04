@@ -166,8 +166,10 @@ fun Login(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,
                     )
                     Button(
                         onClick = {
+                            viewModel.userEmail = email
+                            viewModel.userPassword = password
                             mainActivityCallback.login(email = email,password =  password,navController = navController)
-                            viewModel.findUserDetails(email = email,password = password)
+                            viewModel.findUserDetails(email = email,password= password)
 
                                   },
                         modifier = Modifier

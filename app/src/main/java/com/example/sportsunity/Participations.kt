@@ -1,5 +1,6 @@
 package com.example.sportsunity
 
+import android.util.Log
 import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,23 +48,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.sportsunity.SharedViewModel.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Participations(navController:NavController, modifier: Modifier) {
+fun Participations(navController:NavController,viewModel: SharedViewModel, modifier: Modifier) {
     Scaffold(
         topBar = {
             TopBarDesignWithBack(navController = navController, navigation = "MYPROFILE", header = "Participations")
                  },
         content = {innerpadding->
-            myContentParticipations(navController,innerpadding)
+            myContentParticipations(navController, viewModel = viewModel,innerpadding)
         }
     )
 }
 
 
 @Composable
-fun myContentParticipations(navController: NavController, innerpadding: PaddingValues){
+fun myContentParticipations(navController: NavController,viewModel:SharedViewModel,innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -98,38 +100,44 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
                         textAlign = TextAlign.Center
                     )
                 }
-                val playerList = listOf(
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba",
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba",
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba",
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba",
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba"
-                )
+                var playerList: List<String?>  = emptyList<String>()
+                for(tournament in viewModel.myTournaments){
+                    playerList+=tournament.name
+                }
+//                val playerList = listOf(
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba",
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba",
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba",
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba",
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba"
+//                )
                 LazyColumn(modifier = Modifier.padding(bottom = 0.dp)) {
                     items(playerList) { player ->
-                        Text(
-                            text = player,
-                            color = Color.White,
-                            modifier = Modifier
-                                .padding(5.dp)
-                                .fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
+                        if (player != null) {
+                            Text(
+                                text = player,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
@@ -158,24 +166,36 @@ fun myContentParticipations(navController: NavController, innerpadding: PaddingV
                         textAlign = TextAlign.Center
                     )
                 }
-                val playerList = listOf(
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba",
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba",
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba",
-                    "Khalid Bin Selim",
-                    "Abhishek Das",
-                    "Rayhanul Amin Tanvir",
-                    "Gazi Mujtaba"
-                )
+                var playerList: List<String> = emptyList()
+                var i = 0
+                for(sport in viewModel.allSports){
+                    Log.d("participants-$i","$sport")
+                    for(players in sport.playerList!!){
+                        if(players==viewModel.userDetails.name){
+                            Log.d("participants-100","$players")
+                            playerList+=(sport.tournamentName+"-"+sport.sportName)
+                        }
+                    }
+                }
+                Log.d("participants","$playerList")
+//                val playerList = listOf(
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba",
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba",
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba",
+//                    "Khalid Bin Selim",
+//                    "Abhishek Das",
+//                    "Rayhanul Amin Tanvir",
+//                    "Gazi Mujtaba"
+//                )
                 LazyColumn(modifier = Modifier.padding(bottom = 0.dp)) {
                     items(playerList) { player ->
                         Text(

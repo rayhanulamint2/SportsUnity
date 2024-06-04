@@ -58,7 +58,7 @@ fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,us
         }
 
         composable(route = "PARTICIPATIONS"){
-            Participations(navController = navController,modifier)
+            Participations(navController = navController,viewModel = viewModel,modifier)
         }
 
         composable(route = "MYTOURNAMENTS"){
@@ -97,7 +97,9 @@ fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,us
             viewModel.topBar = ("Football")
             FootBallUpdate(navController = navController,viewModel = viewModel,modifier = modifier)
         }
-
+        composable(route = "OTP"){
+            Otp(navController = navController,viewModel = viewModel,modifier = modifier)
+        }
 
     }
 }

@@ -30,6 +30,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -94,6 +95,7 @@ fun PersonalInfo(navController: NavController,viewModel: SharedViewModel,modifie
             }
                  },
         content = {innerpadding->
+
             myContentPersonalInfo(navController, viewModel = viewModel,innerpadding)
         }
     )
@@ -170,6 +172,7 @@ fun myContentPersonalInfo(navController: NavController,viewModel: SharedViewMode
                         alignment = Alignment.TopCenter
                     )
                     Spacer(modifier = Modifier.height(15.dp))
+
                     Column(
                         modifier = Modifier.fillMaxWidth(.8f)
                     ){
@@ -270,7 +273,10 @@ fun myContentPersonalInfo(navController: NavController,viewModel: SharedViewMode
                 }
 //            }
             Spacer(modifier = Modifier.height(25.dp))
-            Button(onClick = { navController.navigate("CONFIRMATION") }) {
+            Button(onClick = {
+                name?.let { university?.let { it1 -> contact?.let { it2 -> viewModel.updatePersonalDetails(name = it,university = it1,contact= it2) } } }
+                navController.navigate("MYPROFILE")
+            }) {
                 Text(text = "UPDATE")
             }
         }

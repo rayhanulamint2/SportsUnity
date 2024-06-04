@@ -2,8 +2,10 @@ package com.example.sportsunity
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +17,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
@@ -65,7 +69,6 @@ import java.time.format.DateTimeFormatter
 fun CreateTournament(navController: NavController,viewModel: SharedViewModel, modifier: Modifier=Modifier){
     Scaffold(
         topBar = {
-//            TopBarCreateTournament(navController)
             Column {
                 TopAppBar(
                     title = {
@@ -78,11 +81,6 @@ fun CreateTournament(navController: NavController,viewModel: SharedViewModel, mo
                         IconButton(onClick = {
                             navController.navigate("HOME")
                         }) {
-                            //                                 Icon(
-                            //                                     imageVector = Icons.Default.Menu,
-                            //                                     contentDescription = null,
-                            //                                     tint = Color.White
-                            //                                 )
                             Image(
                                 painter = painterResource(id = R.drawable.back_button),
                                 contentDescription = null,
@@ -109,38 +107,13 @@ fun CreateTournament(navController: NavController,viewModel: SharedViewModel, mo
         }
     )
 }
-//@Composable
-//fun TopBarCreateTournament(navController: NavController,modifier: Modifier = Modifier){
-//    Column {
-//        Row(
-//            horizontalArrangement = Arrangement.Center,
-//            modifier = Modifier
-//                .background(Color.Black)
-//                .fillMaxWidth()
-//        ) {
-//            Text(
-//                text = stringResource(id = R.string.create_tournament),
-//                color = Color.White,
-//                textAlign = TextAlign.Center,
-//                style = MaterialTheme.typography.headlineLarge,
-//            )
-//        }
-//        Image(
-//            painter = painterResource(id = R.drawable.blue_line),
-//            contentDescription = "Blue Line",
-//            contentScale = ContentScale.Crop,
-//            modifier = Modifier
-//                .height(2.dp)
-//                .fillMaxWidth()
-//        )
-//    }
-//}
 @SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun myContentCreateTournament(navController: NavController,viewModel: SharedViewModel, innerpadding: PaddingValues){
     Box(modifier = Modifier.fillMaxSize()) {
+        var scrollState = rememberScrollState()
         Image(
             painter = painterResource(id = R.drawable.image_1),
             contentDescription = "Background",
@@ -149,7 +122,8 @@ fun myContentCreateTournament(navController: NavController,viewModel: SharedView
         )
         Column(
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.verticalScroll(state = scrollState, enabled = true)
         ) {
             var text = ""
             var name = ""
@@ -483,6 +457,7 @@ fun myContentCreateTournament(navController: NavController,viewModel: SharedView
 
             Spacer(modifier = Modifier.height(20.dp))
             Button(onClick = {
+
                 viewModel.tournamentUpdate(
                     name = name,
                     description = description,

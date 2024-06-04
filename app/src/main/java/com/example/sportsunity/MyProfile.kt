@@ -28,6 +28,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -89,56 +94,26 @@ fun MyProfile(navController:NavController,viewModel: SharedViewModel, modifier: 
             }
                  },
         content = {innerpadding->
-            myContentMyProfile(navController, viewModel = viewModel,innerpadding)
-        }
-    )
-}
-
-@Composable
-fun TopBarMyProfile(navController: NavController){
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(Color.Black)
-                .fillMaxWidth()
-        ) {
-            NavigationFromMyProfile {
-                navController.navigate("LOGIN")
+            var tanvir by rememberSaveable {
+                mutableStateOf(1)
             }
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium
-            )
-        }
-        Image(
-            painter = painterResource(id = R.drawable.blue_line),
-            contentDescription = "Blue Line",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .height(2.dp)
-                .fillMaxWidth()
-        )
-    }
-}
+            if(tanvir==2){
+                myContentMyProfile(navController, viewModel = viewModel,innerpadding)
+            }
+            else{
+                loading()
+                LaunchedEffect(Unit){
+                    viewModel.userDetails.email?.let { viewModel.userDetails.password?.let { it1 -> viewModel.findUserDetails(email = it, password = it1) } }
+                    tanvir = 2
+                }
+            }
 
-@Composable
-fun NavigationFromMyProfile(onClick: () -> Unit) {
-    val image: Painter = painterResource(id = R.drawable.back_button)
-    Image(
-        painter = image,
-        contentDescription = "Back Button",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(40.dp)
-            .padding(top = 0.dp, bottom = 5.dp)
-            .absoluteOffset(x = (-90).dp, y = 4.dp)
-//                    .align(Alignment.Start)
-            .clickable { onClick() }
+        }
     )
 }
+
+
+
 
 @Composable
 fun myContentMyProfile(navController: NavController, viewModel: SharedViewModel,innerpadding: PaddingValues){
@@ -194,6 +169,15 @@ fun myContentMyProfile(navController: NavController, viewModel: SharedViewModel,
                         style = TextStyle(fontSize = 20.sp)
                     )
                 }
+                Text(
+                    text = if (viewModel.userDetails.isSubscribed == false) {
+                        "not subscribed"
+                    }
+                    else {
+                        "subscribed"
+                    },
+                    color = Color.White
+                )
 
                 Button(
                     onClick = { navController.navigate("PERSONALINFO") },

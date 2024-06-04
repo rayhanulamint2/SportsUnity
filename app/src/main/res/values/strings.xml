@@ -50,5 +50,6 @@
     <string name="val_7">7</string>
     <string name="val_8">8</string>
     <string name="val_9">9</string>
+    <string name="otp_string">Enter the OTP code. The code is send in this number</string>
 
 </resources>

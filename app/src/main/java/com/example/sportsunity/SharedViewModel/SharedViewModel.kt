@@ -17,6 +17,8 @@ import kotlinx.coroutines.tasks.await
 
 
 class SharedViewModel: ViewModel() {
+    var userEmail = ""
+    var userPassword = ""
     var logInDone = false
     var player1 = ""
     var player2 = ""
@@ -187,6 +189,8 @@ class SharedViewModel: ViewModel() {
                     userDetails.contact = document.getString("contact")
                     userDetails.email = document.getString("email")
                     userDetails.password = document.getString("password")
+                    userDetails.asParticipant = document.get("asParticipant") as? List<String>
+                    userDetails.isSubscribed = document.get("isSubscribed") as Boolean?
                     Log.d(TAG, "${document.id} => ${document.data}")
                 }
             }
@@ -211,7 +215,8 @@ class SharedViewModel: ViewModel() {
             "registrationNo" to registrationNo,
             "contact" to contact,
             "email" to email,
-            "password" to password
+            "password" to password,
+            "isSubscribed" to false
         )
 
         // Add a new document with a generated ID
@@ -524,6 +529,37 @@ class SharedViewModel: ViewModel() {
                 Log.w(TAG, "Error adding document", e)
             }
 
+    }
+    fun updatePersonalDetails(name:String,university: String,contact: String,isSubscribed: Boolean = false){
+        val db = Firebase.firestore
+        val washingtonRef = userDetails.documentId?.let { db.collection("users").document(it) }
+// Set the "isCapital" field of the city 'DC'
+
+        washingtonRef?.update(
+            mapOf(
+                "name" to name,
+                "university" to university,
+                "contact" to contact,
+                "isSubscribed" to isSubscribed
+            )
+        )?.addOnSuccessListener {
+            Log.d(TAG, "DocumentSnapshot successfully updated!")
+        }?.addOnFailureListener { e ->
+            Log.w(TAG, "Error updating document", e)
+        }
+
+    }
+    fun updateParticipantList(playerList:List<String>){
+        val db = Firebase.firestore
+        val washingtonRef = userDetails.documentId?.let { db.collection("users").document(it) }
+
+// Set the "isCapital" field of the city 'DC'
+        if (washingtonRef != null) {
+            washingtonRef
+                .update("asParticipant", playerList)
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+        }
     }
     fun addInListTournaments(list: List<TournamentID>?, item: TournamentID): List<TournamentID> {
         if (list == null) {
