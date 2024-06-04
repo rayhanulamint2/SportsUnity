@@ -3,6 +3,7 @@ package com.example.sportsunity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -457,7 +458,7 @@ fun myContentCreateTournament(navController: NavController,viewModel: SharedView
 
             Spacer(modifier = Modifier.height(20.dp))
             Button(onClick = {
-
+            if(viewModel.subscriptionStatus){
                 viewModel.tournamentUpdate(
                     name = name,
                     description = description,
@@ -468,6 +469,15 @@ fun myContentCreateTournament(navController: NavController,viewModel: SharedView
                 )
                 viewModel.sportsUpdate(sports = sports, tournamentName = name)
                 navController.navigate("MYTOURNAMENTS")
+            }
+                else{
+                Toast.makeText(
+                    navController.context,
+                    "Please Subscribe to create tournament.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+
             }) {
                 Text(
                     text = "CREATE"

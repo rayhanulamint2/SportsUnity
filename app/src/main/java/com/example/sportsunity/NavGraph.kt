@@ -100,6 +100,8 @@ fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,us
         composable(route = "OTP"){
             Otp(navController = navController,viewModel = viewModel,modifier = modifier)
         }
-
+//        composable(route = "OTPMAIN"){
+//            OTP(navController = navController,viewModel = viewModel)
+//        }
     }
 }

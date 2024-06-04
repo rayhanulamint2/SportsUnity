@@ -90,7 +90,7 @@ fun MyTournaments(navController:NavController,viewModel: SharedViewModel, modifi
             else if(x==3){
                 Log.d("mytournaments","${viewModel.runningTournaments}")
                 Log.d("myvolunteer1","$viewModel.myVolunteerTournaments")
-                myContent(navController, innerpadding)
+                myContent(navController,viewModel, innerpadding)
             }
             else {
                 loading()

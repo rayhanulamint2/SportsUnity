@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -67,11 +68,6 @@ fun MyProfile(navController:NavController,viewModel: SharedViewModel, modifier: 
                         IconButton(onClick = {
                             navController.navigate("HOME")
                         }) {
-                            //                                 Icon(
-                            //                                     imageVector = Icons.Default.Menu,
-                            //                                     contentDescription = null,
-                            //                                     tint = Color.White
-                            //                                 )
                             Image(
                                 painter = painterResource(id = R.drawable.back_button),
                                 contentDescription = null,
@@ -117,6 +113,7 @@ fun MyProfile(navController:NavController,viewModel: SharedViewModel, modifier: 
 
 @Composable
 fun myContentMyProfile(navController: NavController, viewModel: SharedViewModel,innerpadding: PaddingValues){
+    var showPopup by rememberSaveable { mutableStateOf(false) }
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -158,26 +155,47 @@ fun myContentMyProfile(navController: NavController, viewModel: SharedViewModel,
                     alignment = Alignment.TopCenter
                 )
 
-                viewModel.userDetails.name?.let {
+                Column(
+                ) {
+                    var k = viewModel.userDetails.isSubscribed
+                    // we accept bdapps api
+                    if(k!=viewModel.subscriptionStatus){
+                        k = viewModel.subscriptionStatus
+                        viewModel.userDetails.isSubscribed = k
+                        viewModel.updateSubscriptionDetails()
+                    }
+                    viewModel.userDetails.name?.let {
+                        Text(
+                            text = it,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 24.dp, bottom = 10.dp, start = 24.dp, end = 24.dp),
+                            style = TextStyle(fontSize = 20.sp)
+                        )
+                    }
                     Text(
-                        text = it,
-                        color = Color.White,
+                        text = if (k == false) {
+                            "not subscribed"
+                        }
+                        else {
+                            "subscribed"
+                        },
+                        color = if(k == false){
+                            Color.White
+                        }
+                        else{
+                            Color.Green
+                            },
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
-                        style = TextStyle(fontSize = 20.sp)
+                            .clickable { showPopup = true }
+                            .padding(top = 5.dp, start = 24.dp, bottom = 24.dp, end = 24.dp),
+                        style = TextStyle(fontSize = 15.sp)
                     )
                 }
-                Text(
-                    text = if (viewModel.userDetails.isSubscribed == false) {
-                        "not subscribed"
-                    }
-                    else {
-                        "subscribed"
-                    },
-                    color = Color.White
-                )
 
                 Button(
                     onClick = { navController.navigate("PERSONALINFO") },
@@ -208,5 +226,41 @@ fun myContentMyProfile(navController: NavController, viewModel: SharedViewModel,
                 }
             }
         }
+    }
+    if (showPopup) { // Check if popup should be shown
+        AlertDialog(
+            onDismissRequest = { showPopup = false }, // Dismiss the popup when clicked outside
+            title = {
+                Text(text = "Confirm") // Title of the popup
+            },
+            text = {
+                if(viewModel.subscriptionStatus){
+                    Text("You are going to unsubscribe.") // Message of the popup
+                }
+                else{
+                    Text(text = "You are going to subscribe.")
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showPopup = false
+                        if(viewModel.subscriptionStatus){
+                            viewModel.subscriptionOff()
+                            viewModel.subscriptionStatus = false
+                            viewModel.updateSubscriptionDetails()
+                        }
+                        else{
+                            viewModel.subscriptionOn()
+                            viewModel.subscriptionStatus = true
+                            viewModel.updateSubscriptionDetails()
+                            navController.navigate("HOME")
+                        }
+                    } // Dismiss the popup when button is clicked
+                ) {
+                    Text("Submit") // Text on the button
+                }
+            }
+        )
     }
 }

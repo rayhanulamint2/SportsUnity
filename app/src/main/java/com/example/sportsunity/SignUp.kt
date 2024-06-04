@@ -56,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.sportsunity.SharedViewModel.SharedViewModel
+import com.example.sportsunity.model.UserID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -216,6 +217,9 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                     Button(
                         onClick = {
                             mainActivityCallback.createAccount(email = email,password = password)
+                            viewModel.userDetails = UserID(
+                                contact = mobile
+                            )
                             viewModel.userUpdate(
                                 name = name,
                                 university = university,
@@ -224,7 +228,7 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                                 email = email,
                                 password = password
                             )
-                            navController.navigate("AFTERSIGNUP")
+                            navController.navigate("OTP")
                                   },
                         modifier = Modifier
                             .padding(10.dp)

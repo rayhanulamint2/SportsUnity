@@ -2,18 +2,34 @@ package com.example.sportsunity.SharedViewModel
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.example.sportsunity.MyApiService
+import com.example.sportsunity.ServiceBuilder
+import com.example.sportsunity.model.ApiResponse
+import com.example.sportsunity.model.OtpVerifyRespone
 import com.example.sportsunity.model.PlayerId
+import com.example.sportsunity.model.RequestParameters
 import com.example.sportsunity.model.SportID
+import com.example.sportsunity.model.StatusResponse
+import com.example.sportsunity.model.SubscribeRequestParameters
+import com.example.sportsunity.model.SubscribeResponse
 import com.example.sportsunity.model.TournamentID
+import com.example.sportsunity.model.UnsubscribeRequestParameters
+import com.example.sportsunity.model.UnsubscribeResponse
 import com.example.sportsunity.model.UserID
+import com.example.sportsunity.model.VerifyParameters
+import com.example.sportsunity.model.VerifyParametersStatus
 import com.example.sportsunity.model.WinnerList2
 import com.example.sportsunity.model.teams
 import com.example.sportsunity.model.winnerList1
 import com.google.firebase.Firebase
-import com.google.firebase.firestore.core.ListenSequence
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class SharedViewModel: ViewModel() {
@@ -28,7 +44,7 @@ class SharedViewModel: ViewModel() {
     var user = "user"
     var sport = "Chess"
     var recentTournament = TournamentID()
-    val userDetails = UserID()
+    var userDetails = UserID()
     var allUser: List<UserID> = emptyList()
     var tournaments = arrayListOf<TournamentID>()
     var runningTournaments:List<TournamentID> = emptyList()
@@ -49,7 +65,21 @@ class SharedViewModel: ViewModel() {
     var allWinnerList2: List<WinnerList2> = emptyList()
     var recentWinnerList2 = WinnerList2()
     var tt: List<TournamentID> = emptyList()
+    var requestParameters = RequestParameters(
+        appId = "APP_118862",
+        password = "203c2a6c719101f67ffc648e82b9144c",
+        mobile = "76876"
 
+    )
+    var verifyParameters = VerifyParameters(
+        appId = "APP_118862",
+        password = "203c2a6c719101f67ffc648e82b9144c",
+        referenceNo = "76786",
+        otp = "7867"
+    )
+
+    var subscriptionStatus: Boolean = false
+    var verifyOtpStatus: Boolean = false
 
     // Declare as MutableList
     fun updatePlayerList(playerList:List<String>){
@@ -209,14 +239,18 @@ class SharedViewModel: ViewModel() {
     ) {
         val db = Firebase.firestore
         val list = emptyList<String>()
+        var cc = contact
+        if(contact.length==11){
+            cc = "88$contact"
+        }
         val user = hashMapOf(
             "name" to name,
             "university" to university,
             "registrationNo" to registrationNo,
-            "contact" to contact,
+            "contact" to cc,
             "email" to email,
             "password" to password,
-            "isSubscribed" to false
+            "isSubscribed" to true
         )
 
         // Add a new document with a generated ID
@@ -530,7 +564,7 @@ class SharedViewModel: ViewModel() {
             }
 
     }
-    fun updatePersonalDetails(name:String,university: String,contact: String,isSubscribed: Boolean = false){
+    fun updatePersonalDetails(name:String,university: String,contact: String){
         val db = Firebase.firestore
         val washingtonRef = userDetails.documentId?.let { db.collection("users").document(it) }
 // Set the "isCapital" field of the city 'DC'
@@ -539,8 +573,7 @@ class SharedViewModel: ViewModel() {
             mapOf(
                 "name" to name,
                 "university" to university,
-                "contact" to contact,
-                "isSubscribed" to isSubscribed
+                "contact" to contact
             )
         )?.addOnSuccessListener {
             Log.d(TAG, "DocumentSnapshot successfully updated!")
@@ -570,6 +603,177 @@ class SharedViewModel: ViewModel() {
     fun addInList(list: List<String>, string: String): List<String> {
 //    list.add(string)
         return list + string
+    }
+    fun verifyOtp(otp:String){
+        verifyParameters.otp = otp
+        Log.d("MyActivity", "${verifyParameters}")
+        val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
+        val requestCall = destinationService.verifyOtp(verifyParameters)
+
+        requestCall.enqueue(object : Callback<OtpVerifyRespone> {
+            override fun onResponse(
+                call: Call<OtpVerifyRespone>,
+                response: Response<OtpVerifyRespone>
+            ) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    Log.d("MyActivity", "OTP verified successfully: $apiResponse")
+                    subscriptionStatus = true
+                    verifyOtpStatus = true
+                } else {
+                    // Handle unsuccessful response
+                    Log.e("MyActivity", "Failed to verify OTP: ${response.errorBody()?.string()}")
+                }
+            }
+            override fun onFailure(call: Call<OtpVerifyRespone>, t: Throwable) {
+                // Handle failure
+                Log.e("MyActivity", "Network error: ${t.message}")
+            }
+        })
+    }
+
+    fun sendOtp(){
+
+        val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
+        val requestCall = destinationService.requestOtp(requestParameters)
+
+        requestCall.enqueue(object : Callback<ApiResponse> {
+            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        if (apiResponse.referenceNo != null) {
+                            verifyParameters.referenceNo = apiResponse.referenceNo
+                        }
+                    }
+                    Log.d("MyActivity", "OTP sent successfully: $apiResponse")
+                } else {
+                    // Handle unsuccessful response
+                    Log.e("MyActivity", "Failed to send OTP: ${response.errorBody()?.string()}")
+                }
+            }
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                // Handle failure
+                Log.e("MyActivity", "Network error: ${t.message}")
+            }
+        })
+    }
+    fun verifyStatus(){
+        val verifyParametersStatus = userDetails.contact?.let {
+            VerifyParametersStatus(
+                appId = "APP_118862",
+                password = "203c2a6c719101f67ffc648e82b9144c",
+                mobile = it
+            )
+        }
+        val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
+        val requestCall = verifyParametersStatus?.let { destinationService.verifySubscription(it) }
+        Log.d("MYActivity","nothing:2")
+
+        requestCall?.enqueue(object : Callback<StatusResponse> {
+            override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    Log.d("MyActivity", "Subscription Status verified successfully: $apiResponse")
+                    if (apiResponse != null) {
+                        if(apiResponse.subscriptionStatus=="UNREGISTERED"){
+                            subscriptionStatus = false
+                        } else subscriptionStatus = true
+                    }
+                } else {
+                    // Handle unsuccessful response
+                    Log.e("MyActivity", "Failed to verify Subscription Status: ${response.errorBody()?.string()}")
+
+                }
+            }
+
+            override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
+                // Handle failure
+                Log.e("MyActivity", "Network error: ${t.message}")
+            }
+        })
+    }
+
+    fun updateSubscriptionDetails(){
+        val db = Firebase.firestore
+        val washingtonRef = userDetails.documentId?.let { db.collection("users").document(it) }
+// Set the "isCapital" field of the city 'DC'
+
+        washingtonRef?.update(
+            mapOf(
+                "isSubscribed" to subscriptionStatus
+            )
+        )?.addOnSuccessListener {
+            Log.d(TAG, "DocumentSnapshot successfully updated!")
+        }?.addOnFailureListener { e ->
+            Log.w(TAG, "Error updating document", e)
+        }
+    }
+
+    fun subscriptionOn() {
+        val subscribeRequestParameters = userDetails.contact?.let {
+            SubscribeRequestParameters(
+                appId = "APP_118862",
+                password = "203c2a6c719101f67ffc648e82b9144c",
+                mobile = it
+            )
+        }
+        val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
+        val requestCall = subscribeRequestParameters?.let { destinationService.subscribe(it) }
+
+        if (requestCall != null) {
+            requestCall.enqueue(object : Callback<SubscribeResponse> {
+                override fun onResponse(
+                    call: Call<SubscribeResponse>,
+                    response: Response<SubscribeResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        Log.d("MyActivity", "Subscription request sent successfully: $apiResponse")
+                    } else {
+                        // Handle unsuccessful response
+                        Log.e("MyActivity", "Failed to send subscription request: ${response.errorBody()?.string()}")
+                    }
+                }
+                override fun onFailure(call: Call<SubscribeResponse>, t: Throwable) {
+                    // Handle failure
+                    Log.e("MyActivity", "Network error: ${t.message}")
+                }
+            })
+        }
+    }
+
+    fun subscriptionOff() {
+        val unsubscribeRequestParameters = userDetails.contact?.let {
+            UnsubscribeRequestParameters(
+                appId = "APP_118862",
+                password = "203c2a6c719101f67ffc648e82b9144c",
+                mobile = it
+            )
+        }
+        val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
+        val requestCall = unsubscribeRequestParameters?.let { destinationService.unsubscribe(it) }
+
+        if (requestCall != null) {
+            requestCall.enqueue(object : Callback<UnsubscribeResponse> {
+                override fun onResponse(
+                    call: Call<UnsubscribeResponse>,
+                    response: Response<UnsubscribeResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        Log.d("MyActivity", "Unsubscription request sent successfully: $apiResponse")
+                    } else {
+                        // Handle unsuccessful response
+                        Log.e("MyActivity", "Failed to send unsubscription request: ${response.errorBody()?.string()}")
+                    }
+                }
+                override fun onFailure(call: Call<UnsubscribeResponse>, t: Throwable) {
+                    // Handle failure
+                    Log.e("MyActivity", "Network error: ${t.message}")
+                }
+            })
+        }
     }
 
 //    fun getTopBar(): String {

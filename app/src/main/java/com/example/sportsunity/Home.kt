@@ -211,7 +211,7 @@ fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modif
                 }
                 viewModel.today = formattedLocalDate
                 if (abhishek==2) {
-                    myContent(navController, innerpadding)
+                    myContent(navController, viewModel = viewModel,innerpadding)
                 } else if(abhishek == 3){
                     Log.d("allteam","${viewModel.allWinnerList2}")
                     myContentRunningTournament(
@@ -223,10 +223,12 @@ fun Home(navController: NavController,viewModel: SharedViewModel,modifier: Modif
                 else{
                     loading()
                     LaunchedEffect(Unit) {
+                        viewModel.findUserDetails(email = viewModel.userEmail,password = viewModel.userPassword)
                         viewModel.findTournamentsDetails(viewModel.today, viewModel)
                         viewModel.findAllSports()
                         viewModel.findAllUsers()
                         viewModel.findAllWinnerList1()
+                        viewModel.verifyStatus()
                         viewModel.findAllTeams()
                         viewModel.findAllPlayerId()
                         viewModel.findAllWinnerList2()
@@ -283,7 +285,7 @@ fun loading(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun myContent(navController: NavController,innerpadding: PaddingValues) {
+fun myContent(navController: NavController,viewModel: SharedViewModel,innerpadding: PaddingValues) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -343,7 +345,10 @@ fun myContent(navController: NavController,innerpadding: PaddingValues) {
                 }
             }
             Spacer(modifier = Modifier.height(50.dp))
-            Button(onClick = { navController.navigate("CREATETOURNAMENT") }) {
+            Button(
+                onClick = { navController.navigate("CREATETOURNAMENT") },
+                enabled = viewModel.subscriptionStatus
+                ) {
                 Text(text = " CREATE NEW" + "\nTOURNAMENT",
                     textAlign = TextAlign.Center
                 )

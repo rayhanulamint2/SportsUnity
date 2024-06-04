@@ -1,6 +1,7 @@
 package com.example.sportsunity
 
 import  android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,17 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,7 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,14 +40,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sportsunity.SharedViewModel.SharedViewModel
-import com.google.android.gms.common.internal.StringResourceValueReader
+import com.example.sportsunity.model.OtpVerifyRespone
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +59,8 @@ fun Otp(navController: NavController, viewModel: SharedViewModel, modifier: Modi
         content = {innerpadding->
 
             if(a == 2){
-                OTP(navController, viewModel = viewModel,innerpadding)
+//                viewModel.verifyStatus(navController,innerpadding)
+                OTP(navController,viewModel,innerpadding)
             }
             else{
                 loading()
@@ -76,10 +68,10 @@ fun Otp(navController: NavController, viewModel: SharedViewModel, modifier: Modi
                     Log.d("tanvir123", "${viewModel.userEmail}")
                     Log.d("tanvir123", "${viewModel.userPassword}")
 
-                    viewModel.findUserDetails(email = viewModel.userEmail,password = viewModel.userPassword)
-                    viewModel.findAllTeams()
-                    viewModel.findAllPlayerId()
-                    viewModel.findAllWinnerList2()
+//                    viewModel.findUserDetails(email = viewModel.userEmail,password = viewModel.userPassword)
+//                    viewModel.findAllTeams()
+//                    viewModel.findAllPlayerId()
+//                    viewModel.findAllWinnerList2()
                     Log.d("tanvir12345", "${viewModel.userDetails}")
                     if(viewModel.userDetails.contact!=null){
                         a = 2
@@ -108,20 +100,29 @@ fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: 
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth(.9f)
         ) {
+            var otp by rememberSaveable { mutableStateOf("") }
             Card(
                 colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.background_card))
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
-                val contact = viewModel.userDetails.contact
+                var contact = viewModel.userDetails.contact
+                if (contact != null) {
+                    if(contact.length == 11){
+                        contact = "88$contact"
+                    }
+                }
+                if (contact != null) {
+                    viewModel.requestParameters.mobile = contact
+                }
+                viewModel.sendOtp( )
                 if (contact != null) {
                     Text(
-                        text = stringResource(id = R.string.otp_string)+"  "+contact.get(0)+contact.get(1)+contact.get(2)+"***"+contact.get(8)+contact.get(9)+contact.get(10),
+                        text = stringResource(id = R.string.otp_string)+"  "+contact.get(2)+contact.get(3)+contact.get(4)+"***"+contact.get(10)+contact.get(11)+contact.get(12),
                         fontSize = 20.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 5.dp)
                     )
                 }
-                var otp by rememberSaveable { mutableStateOf("") }
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier// Add border to TextField
@@ -154,7 +155,50 @@ fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: 
 
             Button(
                 onClick = {
-                          navController.navigate("HOME")
+//                        viewModel.verifyOtp(otp = otp)
+
+                    viewModel.verifyParameters.otp = otp
+                    Log.d("MyActivity", "${viewModel.verifyParameters}")
+                    val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
+                    val requestCall = destinationService.verifyOtp(viewModel.verifyParameters)
+
+                    requestCall.enqueue(object : Callback<OtpVerifyRespone> {
+                        override fun onResponse(
+                            call: Call<OtpVerifyRespone>,
+                            response: Response<OtpVerifyRespone>
+                        ) {
+                            if (response.isSuccessful) {
+                                val apiResponse = response.body()
+                                Log.d("MyActivity", "OTP verified successfully: $apiResponse")
+                                if (apiResponse != null) {
+                                    if(apiResponse.subscriptionStatus=="REGISTERED"){
+                                        viewModel.subscriptionStatus = true
+                                        viewModel.verifyOtpStatus = true
+                                        navController.navigate("LOGIN")
+                                        Toast.makeText(
+                                            navController.context,
+                                            "Successfully Log In",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+
+                                    } else{
+                                        Toast.makeText(
+                                            navController.context,
+                                            "Your Otp is incorrect.",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                    }
+                                }
+                            } else {
+                                // Handle unsuccessful response
+                                Log.e("MyActivity", "Failed to verify OTP: ${response.errorBody()?.string()}")
+                            }
+                        }
+                        override fun onFailure(call: Call<OtpVerifyRespone>, t: Throwable) {
+                            // Handle failure
+                            Log.e("MyActivity", "Network error: ${t.message}")
+                        }
+                    })
                     },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -166,3 +210,7 @@ fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: 
         }
     }
 }
+
+
+
+
