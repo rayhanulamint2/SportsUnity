@@ -2,7 +2,7 @@ package com.example.sportsunity.SharedViewModel
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.foundation.layout.PaddingValues
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.sportsunity.MyApiService
@@ -66,21 +66,21 @@ class SharedViewModel: ViewModel() {
     var recentWinnerList2 = WinnerList2()
     var tt: List<TournamentID> = emptyList()
     var requestParameters = RequestParameters(
-        appId = "APP_118862",
-        password = "203c2a6c719101f67ffc648e82b9144c",
+        appId = "APP_119175",
+        password = "5b1c86971267f6383ca7f6daa6b2b401",
         mobile = "76876"
 
     )
     var verifyParameters = VerifyParameters(
-        appId = "APP_118862",
-        password = "203c2a6c719101f67ffc648e82b9144c",
+        appId = "APP_119175",
+        password = "5b1c86971267f6383ca7f6daa6b2b401",
         referenceNo = "76786",
         otp = "7867"
     )
 
     var subscriptionStatus: Boolean = false
     var verifyOtpStatus: Boolean = false
-
+    var otpResend: Boolean = false
     // Declare as MutableList
     fun updatePlayerList(playerList:List<String>){
         val db = Firebase.firestore
@@ -632,7 +632,7 @@ class SharedViewModel: ViewModel() {
         })
     }
 
-    fun sendOtp(){
+    fun sendOtp(navController: NavController){
 
         val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
         val requestCall = destinationService.requestOtp(requestParameters)
@@ -644,6 +644,14 @@ class SharedViewModel: ViewModel() {
                     if (apiResponse != null) {
                         if (apiResponse.referenceNo != null) {
                             verifyParameters.referenceNo = apiResponse.referenceNo
+                        }
+                        else{
+                            Toast.makeText(
+                                navController.context,
+                                "${apiResponse.statusDetail}",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                            navController.navigate("LOGIN")
                         }
                     }
                     Log.d("MyActivity", "OTP sent successfully: $apiResponse")
@@ -661,8 +669,8 @@ class SharedViewModel: ViewModel() {
     fun verifyStatus(){
         val verifyParametersStatus = userDetails.contact?.let {
             VerifyParametersStatus(
-                appId = "APP_118862",
-                password = "203c2a6c719101f67ffc648e82b9144c",
+                appId = "APP_119175",
+                password = "5b1c86971267f6383ca7f6daa6b2b401",
                 mobile = it
             )
         }
@@ -676,9 +684,10 @@ class SharedViewModel: ViewModel() {
                     val apiResponse = response.body()
                     Log.d("MyActivity", "Subscription Status verified successfully: $apiResponse")
                     if (apiResponse != null) {
-                        if(apiResponse.subscriptionStatus=="UNREGISTERED"){
+                        if(apiResponse.subscriptionStatus=="REGISTERED"){
+                            subscriptionStatus = true
+                        } else
                             subscriptionStatus = false
-                        } else subscriptionStatus = true
                     }
                 } else {
                     // Handle unsuccessful response
@@ -713,8 +722,8 @@ class SharedViewModel: ViewModel() {
     fun subscriptionOn() {
         val subscribeRequestParameters = userDetails.contact?.let {
             SubscribeRequestParameters(
-                appId = "APP_118862",
-                password = "203c2a6c719101f67ffc648e82b9144c",
+                appId = "APP_119175",
+                password = "5b1c86971267f6383ca7f6daa6b2b401",
                 mobile = it
             )
         }
@@ -746,8 +755,8 @@ class SharedViewModel: ViewModel() {
     fun subscriptionOff() {
         val unsubscribeRequestParameters = userDetails.contact?.let {
             UnsubscribeRequestParameters(
-                appId = "APP_118862",
-                password = "203c2a6c719101f67ffc648e82b9144c",
+                appId = "APP_119175",
+                password = "5b1c86971267f6383ca7f6daa6b2b401",
                 mobile = it
             )
         }

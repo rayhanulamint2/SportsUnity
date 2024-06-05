@@ -58,36 +58,45 @@ fun Otp(navController: NavController, viewModel: SharedViewModel, modifier: Modi
     Scaffold(
         content = {innerpadding->
 
-            if(a == 2){
+            if(viewModel.userDetails.contact!=null){
 //                viewModel.verifyStatus(navController,innerpadding)
                 OTP(navController,viewModel,innerpadding)
             }
-            else{
-                loading()
-                LaunchedEffect(Unit){
-                    Log.d("tanvir123", "${viewModel.userEmail}")
-                    Log.d("tanvir123", "${viewModel.userPassword}")
+//            else{
+//                loading()
+//                LaunchedEffect(Unit){
+//                    Log.d("tanvir123", "${viewModel.userEmail}")
+//                    Log.d("tanvir123", "${viewModel.userPassword}")
+//
+////                    viewModel.findUserDetails(email = viewModel.userEmail,password = viewModel.userPassword)
+////                    viewModel.findAllTeams()
+////                    viewModel.findAllPlayerId()
+////                    viewModel.findAllWinnerList2()
+//                    Log.d("tanvir12345", "${viewModel.userDetails}")
+//                    if(){
+//                        a = 2
+//                    }
+//
+//                }
 
-//                    viewModel.findUserDetails(email = viewModel.userEmail,password = viewModel.userPassword)
-//                    viewModel.findAllTeams()
-//                    viewModel.findAllPlayerId()
-//                    viewModel.findAllWinnerList2()
-                    Log.d("tanvir12345", "${viewModel.userDetails}")
-                    if(viewModel.userDetails.contact!=null){
-                        a = 2
-                    }
-
-                }
 
 
-
-            }
+//            }
         }
     )
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: PaddingValues){
+    var contact = viewModel.userDetails.contact
+    if (contact != null) {
+        if(contact.length == 11){
+            contact = "88$contact"
+        }
+        viewModel.requestParameters.mobile = contact
+    }
+    if(viewModel.otpResend)viewModel.sendOtp(navController)
+    viewModel.otpResend = false
     Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.image_1),
@@ -100,29 +109,22 @@ fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: 
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth(.9f)
         ) {
+
+
+            if (contact != null) {
+                Text(
+                    text = stringResource(id = R.string.otp_string)+"  "+contact.get(2)+contact.get(3)+contact.get(4)+"***"+contact.get(10)+contact.get(11)+contact.get(12),
+                    fontSize = 20.sp,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+            }
             var otp by rememberSaveable { mutableStateOf("") }
             Card(
                 colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.background_card))
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
-                var contact = viewModel.userDetails.contact
-                if (contact != null) {
-                    if(contact.length == 11){
-                        contact = "88$contact"
-                    }
-                }
-                if (contact != null) {
-                    viewModel.requestParameters.mobile = contact
-                }
-                viewModel.sendOtp( )
-                if (contact != null) {
-                    Text(
-                        text = stringResource(id = R.string.otp_string)+"  "+contact.get(2)+contact.get(3)+contact.get(4)+"***"+contact.get(10)+contact.get(11)+contact.get(12),
-                        fontSize = 20.sp,
-                        color = Color.White,
-                        modifier = Modifier.padding(start = 5.dp)
-                    )
-                }
+
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier// Add border to TextField
@@ -158,6 +160,7 @@ fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: 
 //                        viewModel.verifyOtp(otp = otp)
 
                     viewModel.verifyParameters.otp = otp
+//                    viewModel.verifyParameters.referenceNo = "88018668437301717564892306737512"
                     Log.d("MyActivity", "${viewModel.verifyParameters}")
                     val destinationService = ServiceBuilder.buildService(MyApiService::class.java)
                     val requestCall = destinationService.verifyOtp(viewModel.verifyParameters)
@@ -171,7 +174,7 @@ fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: 
                                 val apiResponse = response.body()
                                 Log.d("MyActivity", "OTP verified successfully: $apiResponse")
                                 if (apiResponse != null) {
-                                    if(apiResponse.subscriptionStatus=="REGISTERED"){
+                                    if(apiResponse.statusDetail=="Success"){
                                         viewModel.subscriptionStatus = true
                                         viewModel.verifyOtpStatus = true
                                         navController.navigate("LOGIN")
@@ -184,7 +187,7 @@ fun OTP(navController: NavController, viewModel: SharedViewModel, innerpadding: 
                                     } else{
                                         Toast.makeText(
                                             navController.context,
-                                            "Your Otp is incorrect.",
+                                            "${apiResponse.statusDetail}",
                                             Toast.LENGTH_SHORT,
                                         ).show()
                                     }

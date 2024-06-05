@@ -228,6 +228,7 @@ fun SignUp(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel
                                 email = email,
                                 password = password
                             )
+                            viewModel.otpResend = true
                             navController.navigate("OTP")
                                   },
                         modifier = Modifier

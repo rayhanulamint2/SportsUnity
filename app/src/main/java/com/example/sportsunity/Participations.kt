@@ -143,7 +143,7 @@ fun myContentParticipations(navController: NavController,viewModel:SharedViewMod
             }
             Card(
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(start = 20.dp, bottom = 10.dp,top = 10.dp, end =20.dp)
                     .weight(.5f),
                 colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.background_card))
             ) {
