@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,user: FirebaseUser,modifier:Modifier = Modifier){
+fun Nav(mainActivityCallback: MainActivityCallback,viewModel: SharedViewModel,modifier:Modifier = Modifier){
     val navController = rememberNavController()
 
     val text = "tanvir"

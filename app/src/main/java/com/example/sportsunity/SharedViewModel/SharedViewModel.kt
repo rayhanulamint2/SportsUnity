@@ -684,7 +684,7 @@ class SharedViewModel: ViewModel() {
                     val apiResponse = response.body()
                     Log.d("MyActivity", "Subscription Status verified successfully: $apiResponse")
                     if (apiResponse != null) {
-                        if(apiResponse.subscriptionStatus=="REGISTERED"){
+                        if(apiResponse.subscriptionStatus=="REGISTERED" || apiResponse.subscriptionStatus == "INITIAL CHARGING PENDING"){
                             subscriptionStatus = true
                         } else
                             subscriptionStatus = false

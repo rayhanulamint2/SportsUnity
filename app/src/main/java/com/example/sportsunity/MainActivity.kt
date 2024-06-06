@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity(),MainActivityCallback {
                 ) {
 
                     val viewModel: SharedViewModel = viewModel()
-                    Firebase.auth.currentUser?.let { Nav(mainActivityCallback = mainActivityCallBack,viewModel = viewModel,user = it) }
+                    Nav(mainActivityCallback = mainActivityCallBack,viewModel = viewModel)
                 }
             }
         }
